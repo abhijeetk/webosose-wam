@@ -18,7 +18,7 @@
 #include "BlinkWebViewProfileHelper.h"
 #include "webos/webview_profile.h"
 
-#include <cstring>
+//#include <cstring>
 
 void BlinkWebViewProfileHelper::clearBrowsingData(const int removeBrowsingDataMask,
         webos::WebViewProfile *profile)
