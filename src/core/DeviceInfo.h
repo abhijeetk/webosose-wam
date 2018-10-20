@@ -19,7 +19,7 @@
 
 #include <QMap>
 #include <QString>
-
+#include <unistd.h>
 class DeviceInfo {
 public:
     virtual ~DeviceInfo() {}

@@ -30,7 +30,7 @@
 WebAppFactoryManager* WebAppFactoryManager::m_instance = NULL;
 
 WebAppFactoryManager* WebAppFactoryManager::instance()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if(!m_instance) {
         m_instance = new WebAppFactoryManager();
     }
@@ -40,6 +40,7 @@ WebAppFactoryManager* WebAppFactoryManager::instance()
 WebAppFactoryManager::WebAppFactoryManager()
     : m_loadPluggableOnDemand(false)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManagerConfig* webAppManagerConfig = WebAppManager::instance()->config();
 
     QString factoryEnv = webAppManagerConfig->getWebAppFactoryPluginTypes();
@@ -56,7 +57,7 @@ WebAppFactoryManager::WebAppFactoryManager()
 }
 
 WebAppFactoryInterface* WebAppFactoryManager::getPluggable(QString appType)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QMap<QString, WebAppFactoryInterface*>::iterator iter = m_interfaces.find(appType);
     if (iter != m_interfaces.end())
         return iter.value();
@@ -65,7 +66,7 @@ WebAppFactoryInterface* WebAppFactoryManager::getPluggable(QString appType)
 }
 
 WebAppFactoryInterface* WebAppFactoryManager::loadPluggable(QString appType)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!appType.isEmpty() && !m_factoryEnv.contains(appType))
         return 0;
 
@@ -97,7 +98,7 @@ WebAppFactoryInterface* WebAppFactoryManager::loadPluggable(QString appType)
 }
 
 WebAppBase* WebAppFactoryManager::createWebApp(QString winType, ApplicationDescription* desc, QString appType)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppFactoryInterface* interface = getPluggable(appType);
     if (interface)
         return interface->createWebApp(winType, desc);
@@ -106,7 +107,7 @@ WebAppBase* WebAppFactoryManager::createWebApp(QString winType, ApplicationDescr
 }
 
 WebAppBase* WebAppFactoryManager::createWebApp(QString winType, WebPageBase* page, ApplicationDescription* desc, QString appType)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppFactoryInterface* interface = getPluggable(appType);  
     if (interface)
         return interface->createWebApp(winType, page, desc);
@@ -115,7 +116,7 @@ WebAppBase* WebAppFactoryManager::createWebApp(QString winType, WebPageBase* pag
 }
 
 WebPageBase* WebAppFactoryManager::createWebPage(QString winType, QUrl url, ApplicationDescription* desc, QString appType, QString launchParams)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebPageBase *page = NULL;
 
     WebAppFactoryInterface* interface = getPluggable(appType);

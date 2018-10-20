@@ -18,7 +18,7 @@
 #define WEBPAGEBLINK_H
 
 #include <QtCore/QUrl>
-
+#include <unistd.h>
 #include "Timer.h"
 #include "WebPageBase.h"
 #include "WebPageBlinkDelegate.h"

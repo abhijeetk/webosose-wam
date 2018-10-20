@@ -18,7 +18,7 @@
 #define WEBAPPWAYLANDWEBOS_H
 
 #include "WebAppWayland.h"
-
+#include <unistd.h>
 class ApplicationDescription;
 
 class WebAppWaylandWebOS : public WebAppWayland {

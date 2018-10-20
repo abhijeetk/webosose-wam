@@ -20,7 +20,7 @@
 #include <QObject>
 #include <QtCore/QString>
 #include <QtCore/QUrl>
-
+#include <unistd.h>
 #include "ObserverList.h"
 
 #include "webos/webview_base.h"

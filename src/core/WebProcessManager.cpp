@@ -33,32 +33,32 @@
 
 WebProcessManager::WebProcessManager()
     : m_maximumNumberOfProcesses(1)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     readWebProcessPolicy();
 }
 
 std::list<const WebAppBase*> WebProcessManager::runningApps()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->runningApps();
 }
 
 std::list<const WebAppBase*> WebProcessManager::runningApps(uint32_t pid)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->runningApps(pid);
 }
 
 WebAppBase* WebProcessManager::findAppById(const QString& appId)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->findAppById(appId);
 }
 
 WebAppBase* WebProcessManager::getContainerApp()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->getContainerApp();
 }
 
 bool WebProcessManager::webProcessInfoMapReady()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     uint32_t count = 0;
     for (const auto& it : m_webProcessInfoMap) {
         if (it.proxyID != 0)
@@ -69,7 +69,7 @@ bool WebProcessManager::webProcessInfoMapReady()
 }
 
 uint32_t WebProcessManager::getWebProcessProxyID(const ApplicationDescription *desc) const
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!desc)
         return 0;
 
@@ -84,7 +84,7 @@ uint32_t WebProcessManager::getWebProcessProxyID(const ApplicationDescription *d
 }
 
 uint32_t WebProcessManager::getWebProcessProxyID(uint32_t pid) const
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     for (QMap<QString, WebProcessInfo>::const_iterator it = m_webProcessInfoMap.begin(); it != m_webProcessInfoMap.end(); it++) {
         if (it.value().webProcessPid == pid)
             return it.value().proxyID;
@@ -93,7 +93,7 @@ uint32_t WebProcessManager::getWebProcessProxyID(uint32_t pid) const
 }
 
 QString WebProcessManager::getWebProcessMemSize(uint32_t pid) const
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QString filePath = QString("/proc/") + QString::number(pid) + QString("/status");
     FILE *fd = fopen(filePath.toStdString().c_str(), "r");
     QString vmrss;
@@ -114,7 +114,7 @@ QString WebProcessManager::getWebProcessMemSize(uint32_t pid) const
 }
 
 void WebProcessManager::readWebProcessPolicy()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QString webProcessConfigurationPath = WebAppManager::instance()->config()->getWebProcessConfigPath();
 
     QFile file(webProcessConfigurationPath);
@@ -159,7 +159,7 @@ void WebProcessManager::readWebProcessPolicy()
 }
 
 void WebProcessManager::setWebProcessCacheProperty(QJsonObject object, QString key)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebProcessInfo info = WebProcessInfo(0, 0);
     QString memoryCacheStr, codeCacheStr;
     if (!object.value("memoryCache").isUndefined()) {
@@ -183,7 +183,7 @@ void WebProcessManager::setWebProcessCacheProperty(QJsonObject object, QString k
 }
 
 QString WebProcessManager::getProcessKey(const ApplicationDescription* desc) const
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!desc)
         return QString();
 
@@ -233,7 +233,7 @@ QString WebProcessManager::getProcessKey(const ApplicationDescription* desc) con
 }
 
 void WebProcessManager::killWebProcess(uint32_t pid)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     for(QMap<QString, WebProcessInfo>::iterator it = m_webProcessInfoMap.begin(); it != m_webProcessInfoMap.end(); it++) {
         if (it.value().webProcessPid == pid) {
             it.value().requestKill = false;
@@ -248,7 +248,7 @@ void WebProcessManager::killWebProcess(uint32_t pid)
 }
 
 void WebProcessManager::requestKillWebProcess(uint32_t pid)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     for (QMap<QString, WebProcessInfo>::iterator it = m_webProcessInfoMap.begin(); it != m_webProcessInfoMap.end(); it++) {
         if (it.value().webProcessPid == pid) {
             LOG_INFO(MSGID_KILL_WEBPROCESS_DELAYED, 1, PMLOGKFV("PID", "%u", pid), "");

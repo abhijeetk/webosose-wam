@@ -18,7 +18,7 @@
 #define WEBAPPFACTORYLUNA_H
 
 #include "WebAppFactoryInterface.h"
-
+#include <unistd.h>
 #include <QtCore/QUrl>
 
 class WebAppFactoryLuna : public QObject,

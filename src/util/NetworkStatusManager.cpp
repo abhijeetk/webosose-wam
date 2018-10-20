@@ -19,6 +19,7 @@
 
 void NetworkStatusManager::updateNetworkStatus(const NetworkStatus& status)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_current.type() != status.type())
         appendLogList(status.type(), m_current.type(), status.type());
 
@@ -32,6 +33,7 @@ void NetworkStatusManager::updateNetworkStatus(const NetworkStatus& status)
 
 void NetworkStatusManager::checkInformationChange(const NetworkStatus::Information& info)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_current.information().ipAddress() != info.ipAddress())
         appendLogList(QString("ipAddress"), m_current.information().ipAddress(), info.ipAddress());
     if (m_current.information().dns1() != info.dns1())
@@ -52,12 +54,14 @@ void NetworkStatusManager::checkInformationChange(const NetworkStatus::Informati
 
 void NetworkStatusManager::appendLogList(const QString& key, const QString& previous, const QString& current)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QPair<QString, QString> pair = qMakePair(previous, current);
     m_logList[key] = pair;
 }
 
 void NetworkStatusManager::printLog()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QMapIterator<QString, QPair<QString, QString> > itr(m_logList);
     while (itr.hasNext()) {
         itr.next();

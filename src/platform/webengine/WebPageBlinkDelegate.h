@@ -19,7 +19,7 @@
 
 #include <QString>
 #include <QStringList>
-
+#include <unistd.h>
 class WebPageBlinkDelegate {
 public:
     virtual ~WebPageBlinkDelegate() {}

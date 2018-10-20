@@ -21,7 +21,7 @@
 #include <QStringList>
 
 #include "WebAppFactoryInterface.h"
-
+#include <unistd.h>
 class WebAppFactoryManager {
 public:
     static WebAppFactoryManager* instance();

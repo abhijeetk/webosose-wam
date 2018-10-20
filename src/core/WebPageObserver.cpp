@@ -22,15 +22,16 @@ WebPageObserver::WebPageObserver(WebPageBase* page)
     : m_page(NULL)
 {
     observe(page);
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 }
 
 WebPageObserver::WebPageObserver()
     : m_page(NULL)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 }
 
 void WebPageObserver::observe(WebPageBase* page)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_page == page)
         return;
     m_page = page;
@@ -39,7 +40,7 @@ void WebPageObserver::observe(WebPageBase* page)
 }
 
 void WebPageObserver::unobserve(WebPageBase* page)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_page != page)
         return;
     if (m_page)

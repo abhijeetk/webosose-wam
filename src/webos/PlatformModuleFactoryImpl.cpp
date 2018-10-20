@@ -26,12 +26,12 @@
 #include "BlinkWebProcessManager.h"
 
 PlatformModuleFactoryImpl::PlatformModuleFactoryImpl()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     prepareRenderingContext();
 }
 
 ServiceSender* PlatformModuleFactoryImpl::createServiceSender()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 #ifdef HAS_LUNA_SERVICE
     return new ServiceSenderLuna();
 #else
@@ -40,12 +40,12 @@ ServiceSender* PlatformModuleFactoryImpl::createServiceSender()
 }
 
 WebProcessManager* PlatformModuleFactoryImpl::createWebProcessManager()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return new BlinkWebProcessManager();
 }
 
 ContainerAppManager* PlatformModuleFactoryImpl::createContainerAppManager()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if(useContainerApp()) {
         return new ContainerAppManager();
     }
@@ -55,17 +55,17 @@ ContainerAppManager* PlatformModuleFactoryImpl::createContainerAppManager()
 }
 
 DeviceInfo* PlatformModuleFactoryImpl::createDeviceInfo()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return new DeviceInfoImpl();
 }
 
 WebAppManagerConfig* PlatformModuleFactoryImpl::createWebAppManagerConfig()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return new WebAppManagerConfig();
 }
 
 bool PlatformModuleFactoryImpl::useContainerApp()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (qgetenv("DISABLE_CONTAINER") == "1")
         return false;
 
@@ -73,5 +73,5 @@ bool PlatformModuleFactoryImpl::useContainerApp()
 }
 
 void PlatformModuleFactoryImpl::prepareRenderingContext()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 }

@@ -19,7 +19,7 @@
 
 #include "Timer.h"
 #include "WebAppBase.h"
-
+#include <unistd.h>
 #include <QtCore/QVariant>
 
 #include "webos/common/webos_constants.h"

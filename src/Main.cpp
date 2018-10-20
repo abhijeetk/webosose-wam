@@ -94,6 +94,10 @@ int main (int argc, const char** argv)
   qInstallMessageHandler(qMessageHandler);
 
   changeUserIDGroupID();
+  fprintf(stderr, "main function \r\n");
+  for (int i = 0; i < argc; i++) {
+      fprintf(stderr, "main function %d : %s\r\n", i, argv[i]);
+  }
 
 #if defined(HAS_AGL_SERVICE)
   WebRuntimeAGL runtime;

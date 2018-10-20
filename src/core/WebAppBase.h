@@ -22,11 +22,13 @@
 
 #include "WebAppManager.h"
 #include "WebPageObserver.h"
-
+#include <unistd.h>
 class ApplicationDescription;
 class WebAppBasePrivate;
 class WebPageBase;
-
+/*
+class WebAppBase : public WebPageObserver {
+                    */
 class WebAppBase : public QObject,
                    public WebPageObserver {
 

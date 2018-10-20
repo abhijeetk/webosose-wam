@@ -40,7 +40,7 @@ WebPageBase::WebPageBase()
     , m_loadErrorPolicy(QStringLiteral("default"))
     , m_cleaningResources(false)
     , m_isPreload(false)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 }
 
 WebPageBase::WebPageBase(const QUrl& url, ApplicationDescription* desc, const QString& params)
@@ -56,32 +56,32 @@ WebPageBase::WebPageBase(const QUrl& url, ApplicationDescription* desc, const QS
     , m_loadErrorPolicy(QStringLiteral("default"))
     , m_cleaningResources(false)
     , m_isPreload(false)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 }
 
 WebPageBase::~WebPageBase()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LOG_INFO(MSGID_WEBPAGE_CLOSED, 1, PMLOGKS("APP_ID", qPrintable(appId())), "");
 }
 
 QString WebPageBase::launchParams() const
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return m_launchParams;
 }
 
 void WebPageBase::setLaunchParams(const QString& params)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_launchParams = params;
 }
 
 void WebPageBase::setApplicationDescription(ApplicationDescription* desc)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_appDesc = desc;
     setPageProperties();
 }
 
 QString WebPageBase::getIdentifier() const
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     // If appId is ContainerAppId then it should be ""? Why not just container appid?
     // I think there shouldn't be any chance to be returned container appid even for container base app
 
@@ -91,7 +91,7 @@ QString WebPageBase::getIdentifier() const
 }
 
 void WebPageBase::load()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LOG_INFO(MSGID_WEBPAGE_LOAD, 2, PMLOGKS("APP_ID", qPrintable(appId())), PMLOGKFV("PID", "%d", getWebProcessPID()), "m_launchParams:%s", qPrintable(m_launchParams));
     /* this function is main load of WebPage : load default url */
     setupLaunchEvent();
@@ -102,7 +102,7 @@ void WebPageBase::load()
 }
 
 void WebPageBase::setupLaunchEvent()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QString launchEventJS = QStringLiteral(
             "(function() {"
             "    var launchEvent = new CustomEvent('webOSLaunch', { detail: %1 });"
@@ -123,7 +123,7 @@ void WebPageBase::setupLaunchEvent()
 }
 
 void WebPageBase::sendLocaleChangeEvent(const QString& language)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     evaluateJavaScript(QStringLiteral(
         "setTimeout(function () {"
         "    var localeEvent=new CustomEvent('webOSLocaleChange');"
@@ -133,12 +133,12 @@ void WebPageBase::sendLocaleChangeEvent(const QString& language)
 }
 
 void WebPageBase::cleanResources()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     setCleaningResources(true);
 }
 
 bool WebPageBase::relaunch(const QString& launchParams, const QString& launchingAppId)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     resumeWebPagePaintingAndJSExecution();
 
     // for common webapp relaunch scenario
@@ -165,7 +165,7 @@ bool WebPageBase::relaunch(const QString& launchParams, const QString& launching
 }
 
 bool WebPageBase::doHostedWebAppRelaunch(const QString& launchParams)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     /* hosted webapp deeplinking spec
     // legacy case
     "deeplinkingParams":"{ \
@@ -196,7 +196,7 @@ bool WebPageBase::doHostedWebAppRelaunch(const QString& launchParams)
 }
 
 bool WebPageBase::doDeeplinking(const QString& launchParams)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonObject obj = QJsonDocument::fromJson(launchParams.toUtf8()).object();
     if (obj.isEmpty() || obj.value("contentTarget").isUndefined())
         return false;
@@ -224,7 +224,7 @@ bool WebPageBase::doDeeplinking(const QString& launchParams)
 }
 
 void WebPageBase::sendRelaunchEvent()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     setVisible(true);
     LOG_INFO(MSGID_SEND_RELAUNCHEVENT, 2, PMLOGKS("APP_ID", qPrintable(appId())), PMLOGKFV("PID", "%d", getWebProcessPID()), "");
     // Send the relaunch event on the next tick after javascript is loaded
@@ -239,17 +239,17 @@ void WebPageBase::sendRelaunchEvent()
 }
 
 void WebPageBase::urlChangedSlot()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     Q_EMIT webPageUrlChanged();
 }
 
 void WebPageBase::handleLoadStarted()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_suspendAtLoad = true;
 }
 
 void WebPageBase::handleLoadFinished()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LOG_INFO(MSGID_WEBPAGE_LOAD_FINISHED, 2, PMLOGKS("APP_ID", qPrintable(appId())), PMLOGKFV("PID", "%d", getWebProcessPID()), "m_suspendAtLoad : %s", m_suspendAtLoad ? "true; suspend in this time" : "false");
     if (appId() == WebAppManager::instance()->getContainerAppId())
         WebAppManager::instance()->setContainerAppLaunched(true);
@@ -266,7 +266,7 @@ void WebPageBase::handleLoadFinished()
 }
 
 void WebPageBase::handleLoadFailed(int errorCode)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LOG_INFO(MSGID_WEBPAGE_LOAD_FAILED, 2, PMLOGKS("APP_ID", qPrintable(appId())), PMLOGKFV("PID", "%d", getWebProcessPID()), "");
 
     // errorCode 204 specifically states that the web browser not relocate
@@ -278,7 +278,7 @@ void WebPageBase::handleLoadFailed(int errorCode)
 }
 
 void WebPageBase::cleanResourcesFinished()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->postRunningAppList();
     if (m_cleaningResources) {
         WebAppManager::instance()->removeWebAppFromWebProcessInfoMap(appId());
@@ -287,7 +287,7 @@ void WebPageBase::cleanResourcesFinished()
 }
 
 void WebPageBase::handleForceDeleteWebPage()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     delete this;
 }
 
@@ -342,7 +342,7 @@ void WebPageBase::doLoadSlot()
 }
 
 bool WebPageBase::hasLoadErrorPolicy(bool isHttpResponseError, int errorCode)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_loadErrorPolicy.compare("event")) {
        evaluateJavaScript(QStringLiteral(
            "{"
@@ -357,7 +357,7 @@ bool WebPageBase::hasLoadErrorPolicy(bool isHttpResponseError, int errorCode)
 }
 
 void WebPageBase::applyPolicyForUrlResponse(bool isMainFrame, const QString& url, int status_code)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QUrl qUrl(url);
     static const int s_httpErrorStatusCode = 400;
     if (qUrl.scheme() != "file" &&  status_code >= s_httpErrorStatusCode) {
@@ -371,7 +371,7 @@ void WebPageBase::applyPolicyForUrlResponse(bool isMainFrame, const QString& url
 }
 
 void WebPageBase::postRunningAppList()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->postRunningAppList();
 }
 
@@ -381,7 +381,7 @@ void WebPageBase::postWebProcessCreated(uint32_t pid)
 }
 
 void WebPageBase::setBackgroundColorOfBody(const QString& color)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     // for error page only, set default background color to white by executing javascript
     QString whiteBackground = QStringLiteral(
         "(function() {"
@@ -408,7 +408,7 @@ void WebPageBase::setBackgroundColorOfBody(const QString& color)
 }
 
 QString WebPageBase::defaultFont()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QString defaultFont = "LG Display-Regular";
     QString language;
     QString country;
@@ -429,7 +429,7 @@ QString WebPageBase::defaultFont()
 }
 
 void WebPageBase::updateIsLoadErrorPageFinish()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     // ex)
     // Target error page URL : file:///usr/share/localization/webappmanager2/resources/ko/html/loaderror.html?errorCode=65&webkitErrorCode=65
     // WAM error page : file:///usr/share/localization/webappmanager2/loaderror.html
@@ -450,7 +450,7 @@ void WebPageBase::updateIsLoadErrorPageFinish()
 
 #define URL_SIZE_LIMIT 768
 QString WebPageBase::truncateURL(const QString& url)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if(url.size() < URL_SIZE_LIMIT)
         return url;
     QString res = QString(url);
@@ -459,7 +459,7 @@ QString WebPageBase::truncateURL(const QString& url)
 
 
 void WebPageBase::setCustomUserScript()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     // 1. check app folder has userScripts
     // 2. check userscript.js there is, appfolder/webOSUserScripts/*.js
     QString userScriptFilePath = QDir(QString::fromStdString(m_appDesc->folderPath())).filePath(getWebAppManagerConfig()->getUserScriptPath());

@@ -22,6 +22,7 @@
 
 QString PalmSystemBase::getDeviceInfo(QString name)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QString value;
     WebAppManager::instance()->getDeviceInfo(name, value);
 
@@ -30,6 +31,7 @@ QString PalmSystemBase::getDeviceInfo(QString name)
 
 QVariant PalmSystemBase::getResource(QVariant a, QVariant b)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QFile f(a.toString());
     if (!f.open(QIODevice::ReadOnly))
         return QVariant();
@@ -41,6 +43,7 @@ QVariant PalmSystemBase::getResource(QVariant a, QVariant b)
 
 QString PalmSystemBase::country() const
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QString localcountry;
     QString smartServiceCountry;
     QString country;
@@ -56,6 +59,7 @@ QString PalmSystemBase::country() const
 
 QString PalmSystemBase::locale() const
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QString systemlocale;
     WebAppManager::instance()->getSystemLanguage(systemlocale);
     return systemlocale;
@@ -63,16 +67,19 @@ QString PalmSystemBase::locale() const
 
 QString PalmSystemBase::localeRegion() const
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return QString("US");
 }
 
 QString PalmSystemBase::phoneRegion() const
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return QString("");
 }
 
 void PalmSystemBase::setContainerAppReady(const QString& appId)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (appId == WebAppManager::instance()->getContainerAppId())
         WebAppManager::instance()->setContainerAppReady(true);
 }

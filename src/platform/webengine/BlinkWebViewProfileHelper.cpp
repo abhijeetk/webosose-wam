@@ -22,6 +22,7 @@
 void BlinkWebViewProfileHelper::clearBrowsingData(const int removeBrowsingDataMask,
         webos::WebViewProfile *profile)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (profile)
         profile->RemoveBrowsingData(removeBrowsingDataMask);
     else
@@ -30,11 +31,12 @@ void BlinkWebViewProfileHelper::clearBrowsingData(const int removeBrowsingDataMa
 
 void BlinkWebViewProfileHelper::clearDefaultBrowsingData(const int removeBrowsingDataMask)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     webos::WebViewProfile::GetDefaultProfile()->RemoveBrowsingData(removeBrowsingDataMask);
 }
 
 int BlinkWebViewProfileHelper::maskForBrowsingDataType(const char* type) {
-
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (strcmp(type, browsing_data_types::kAll) == 0)
         return webos::WebViewProfile::REMOVE_ALL;
     if (strcmp(type, browsing_data_types::kAppCache) == 0)

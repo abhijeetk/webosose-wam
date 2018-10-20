@@ -28,7 +28,7 @@
 #include <QString>
 
 WebAppBase* WebAppFactoryLuna::createWebApp(QString winType, ApplicationDescription* desc)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppBase* app = 0;
 
     if(winType == WT_CARD || winType == WT_POPUP || winType == WT_MINIMAL || winType == WT_FLOATING) {
@@ -47,12 +47,12 @@ WebAppBase* WebAppFactoryLuna::createWebApp(QString winType, ApplicationDescript
 }
 
 WebAppBase* WebAppFactoryLuna::createWebApp(QString winType, WebPageBase* page, ApplicationDescription* desc)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return createWebApp(winType, desc);
 }
 
 WebPageBase* WebAppFactoryLuna::createWebPage(QUrl url, ApplicationDescription* desc, QString launchParams)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return new WebPageBlink(url, desc, launchParams);
 }
 

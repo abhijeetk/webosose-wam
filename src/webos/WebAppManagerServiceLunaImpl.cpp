@@ -26,13 +26,13 @@
 #define LS2_PRIVATE_CALL(FUNC, SERVICE, PARAMS) callPrivate<WebAppManagerServiceLunaImpl, &WebAppManagerServiceLunaImpl::FUNC>(SERVICE, PARAMS, this)
 
 WebAppManagerServiceLuna* WebAppManagerServiceLuna::instance()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     static WebAppManagerServiceLuna* service = new WebAppManagerServiceLunaImpl();
     return service;
 }
 
 void WebAppManagerServiceLunaImpl::systemServiceConnectCallback(QJsonObject reply)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManagerServiceLuna::systemServiceConnectCallback(reply);
 
     if (reply.contains("connected")) {
@@ -47,13 +47,13 @@ void WebAppManagerServiceLunaImpl::systemServiceConnectCallback(QJsonObject repl
 }
 
 QJsonObject WebAppManagerServiceLunaImpl::setInspectorEnable(QJsonObject request)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonObject reply{{"returnValue", true}};
     return reply;
 }
 
 void WebAppManagerServiceLunaImpl::getSystemOptionCallback(QJsonObject reply)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonObject settings = reply.value("settings").toObject();
     //The settings is empty when service is crashed
     //The right value will be notified again when service is restarted

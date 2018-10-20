@@ -18,7 +18,7 @@
 #define PALMSYSTEMBLINK_H_
 
 #include "PalmSystemWebOS.h"
-
+#include <unistd.h>
 class PalmSystemBlink : public PalmSystemWebOS {
 public:
     PalmSystemBlink(WebAppBase* app);

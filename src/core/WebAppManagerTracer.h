@@ -18,7 +18,7 @@
 #define WebAppManagerTracer_h
 
 #ifdef HAS_LTTNG
-
+#include <unistd.h>
 #include "pmtrace_webappmanager3_provider.h"
 
 /* PMTRACE_LOG is for free form tracing. Provide a string

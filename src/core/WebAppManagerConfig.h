@@ -20,7 +20,7 @@
 #include <QMap>
 #include <QString>
 #include <QVariant>
-
+#include <unistd.h>
 class WebAppManagerConfig {
 public:
     WebAppManagerConfig();

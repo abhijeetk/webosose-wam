@@ -18,6 +18,7 @@
 
 bool DeviceInfo::getDisplayWidth(int &value)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     bool ret = false;
     QString valueStr;
 
@@ -29,11 +30,13 @@ bool DeviceInfo::getDisplayWidth(int &value)
 
 void DeviceInfo::setDisplayWidth(int value)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_deviceInfo.insert("DisplayWidth", QString::number(value));
 }
 
 bool DeviceInfo::getDisplayHeight(int &value)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     bool ret = false;
     QString valueStr;
 
@@ -45,21 +48,25 @@ bool DeviceInfo::getDisplayHeight(int &value)
 
 void DeviceInfo::setDisplayHeight(int value)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_deviceInfo.insert("DisplayHeight", QString::number(value));
 }
 
 bool DeviceInfo::getSystemLanguage(QString &value)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return getDeviceInfo("SystemLanguage", value);
 }
 
 void DeviceInfo::setSystemLanguage(QString value)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_deviceInfo.insert("SystemLanguage", value);
 }
 
 bool DeviceInfo::getDeviceInfo(QString name, QString &value)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_deviceInfo.contains(name)) {
         value = m_deviceInfo.value(name);
         return true;
@@ -70,5 +77,6 @@ bool DeviceInfo::getDeviceInfo(QString name, QString &value)
 
 void DeviceInfo::setDeviceInfo(QString name, QString value)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_deviceInfo.insert(name, value);
 }

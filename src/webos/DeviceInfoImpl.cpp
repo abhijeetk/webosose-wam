@@ -39,7 +39,7 @@ DeviceInfoImpl::DeviceInfoImpl()
     , m_3DSupport(false)
     , m_hardwareVersion("0x00000001")
     , m_firmwareVersion("00.00.01")
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QFile file("/var/luna/preferences/localeInfo");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         return;
@@ -67,16 +67,16 @@ DeviceInfoImpl::DeviceInfoImpl()
 
 bool DeviceInfoImpl::getDeviceInfo(QString name, QString &value)
 {
-    return DeviceInfo::getDeviceInfo(name, value);
+   fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__); return DeviceInfo::getDeviceInfo(name, value);
 }
 
 void DeviceInfoImpl::setDeviceInfo(QString name, QString value)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     DeviceInfo::setDeviceInfo(name, value);
 }
 
 bool DeviceInfoImpl::getInfoFromLunaPrefs(const char* key, std::string& value)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     char* str = 0;
 #ifdef HAS_LUNA_SERVICE
     if (LP_ERR_NONE == LPSystemCopyStringValue(key, &str) && str) {
@@ -91,7 +91,7 @@ bool DeviceInfoImpl::getInfoFromLunaPrefs(const char* key, std::string& value)
 }
 
 void DeviceInfoImpl::initDisplayInfo()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     // Display information --------------------------------------------------------
     float m_screenDensity = 1.0f;
     int hardwareScreenWidth = 0;
@@ -114,7 +114,7 @@ void DeviceInfoImpl::initDisplayInfo()
 }
 
 void DeviceInfoImpl::initPlatformInfo()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     // normally like this info
     /*
        "modelName": "WEBOS1",
@@ -147,7 +147,7 @@ void DeviceInfoImpl::initPlatformInfo()
 }
 
 void DeviceInfoImpl::gatherInfo()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     initDisplayInfo();
     initPlatformInfo();
 }

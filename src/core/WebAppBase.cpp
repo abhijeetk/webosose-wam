@@ -35,10 +35,14 @@ public:
     , m_forceClose(false)
     , m_appDesc(0)
     {
+
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
+
     }
 
     ~WebAppBasePrivate()
     {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
         if(m_page)
             delete m_page;
 
@@ -47,6 +51,7 @@ public:
 
     void createActivity()
     {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
         if (m_page)
             WebAppManager::instance()->requestActivity(q);
     }
@@ -75,10 +80,12 @@ WebAppBase::WebAppBase()
     , m_hiddenWindow(false)
     , m_wasContainerApp(false)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 }
 
 WebAppBase::~WebAppBase()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LOG_INFO(MSGID_WEBAPP_CLOSED, 2, PMLOGKS("APP_ID", appId().isEmpty() ? "unknown" : qPrintable(appId())), PMLOGKFV("PID", "%d", page()->getWebProcessPID()), "");
     cleanResources();
     delete d;
@@ -86,109 +93,129 @@ WebAppBase::~WebAppBase()
 
 bool WebAppBase::getCrashState()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return m_crashed;
 }
 
 void WebAppBase::setCrashState(bool state)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_crashed = state;
 }
 
 void WebAppBase::setHiddenWindow(bool hidden)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_hiddenWindow = hidden;
 }
 
 bool WebAppBase::getHiddenWindow()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return m_hiddenWindow;
 }
 
 void WebAppBase::setWasContainerApp(bool contained)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_wasContainerApp = contained;
 }
 
 bool WebAppBase::wasContainerApp() const
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return m_wasContainerApp;
 }
 
 void WebAppBase::setKeepAlive(bool keepAlive)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     d->m_keepAlive = keepAlive;
 }
 
 bool WebAppBase::keepAlive()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return d->m_keepAlive;
 }
 
 void WebAppBase::setForceClose()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     d->m_forceClose = true;
 }
 
 bool WebAppBase::forceClose()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return d->m_forceClose;
 }
 
 WebPageBase* WebAppBase::page() const
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return d->m_page;
 }
 
 bool WebAppBase::isWindowed() const
-{
+{    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return false;
 }
 
 void WebAppBase::setAppId(const QString& appId)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     d->m_appId = appId;
 }
 
 void WebAppBase::setLaunchingAppId(const QString& appId)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     d->m_launchingAppId = appId;
 }
 
 QString WebAppBase::appId() const
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return d->m_appId;
 }
 
 void WebAppBase::setInstanceId(const QString& instanceId)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     d->m_instanceId = instanceId;
 }
 
 QString WebAppBase::instanceId() const
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return d->m_instanceId;
 }
 
 QString WebAppBase::url() const
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return d->m_url;
 }
 
 QString WebAppBase::launchingAppId() const
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return d->m_launchingAppId;
 }
 
 ApplicationDescription* WebAppBase::getAppDescription() const
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return d->m_appDesc;
 }
 
 void WebAppBase::cleanResources()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     // does nothing if m_page has already been deleted and set to 0 by ~WindowedWebApp
     d->destroyActivity();
-
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (d->m_appDesc) {
         delete d->m_appDesc;
         d->m_appDesc = 0;
@@ -197,31 +224,36 @@ void WebAppBase::cleanResources()
 
 int WebAppBase::currentUiWidth()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->currentUiWidth();
 }
 
 int WebAppBase::currentUiHeight()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->currentUiHeight();
 }
 
 void WebAppBase::setActiveAppId(QString id)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->setActiveAppId(id);
 }
 
 void WebAppBase::forceCloseAppInternal()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->forceCloseAppInternal(this);
 }
 
 void WebAppBase::closeAppInternal()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->closeAppInternal(this);
 }
 
 void WebAppBase::attach(WebPageBase* page)
-{
+{    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     // connect to the signals of the WebBridge
     // parse up the ApplicationDescription
     if (d->m_page)
@@ -239,8 +271,9 @@ void WebAppBase::attach(WebPageBase* page)
 
 WebPageBase* WebAppBase::detach(void)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebPageBase* p = d->m_page;
-
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     disconnect(d->m_page, 0, this, 0);
     unobserve(d->m_page);
 
@@ -249,7 +282,7 @@ WebPageBase* WebAppBase::detach(void)
 }
 
 void WebAppBase::relaunch(const QString& args, const QString& launchingAppId)
-{
+{    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LOG_INFO(MSGID_APP_RELAUNCH, 3,
              PMLOGKS("APP_ID", qPrintable(appId())),
              PMLOGKFV("PID", "%d", page()->getWebProcessPID()),
@@ -308,11 +341,12 @@ void WebAppBase::relaunch(const QString& args, const QString& launchingAppId)
 
 void WebAppBase::webPageLoadFinishedSlot()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     doPendingRelaunch();
 }
 
 void WebAppBase::doPendingRelaunch()
-{
+{    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if(m_inProgressRelaunchLaunchingAppId.size() || m_inProgressRelaunchParams.size()) {
       LOG_INFO(MSGID_APP_RELAUNCH, 2,
                PMLOGKS("APP_ID", qPrintable(appId())),
@@ -326,7 +360,7 @@ void WebAppBase::doPendingRelaunch()
 }
 
 void WebAppBase::webPageClosePageRequestedSlot()
-{
+{    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LOG_INFO(MSGID_WINDOW_CLOSED_JS, 2, PMLOGKS("APP_ID", qPrintable(appId())), PMLOGKFV("PID", "%d", page()->getWebProcessPID()), "");
     WebAppManager::instance()->closeApp(appId().toStdString());
 }
@@ -347,19 +381,19 @@ void WebAppBase::showWindow()
     if (m_wasContainerApp)
         WebAppManager::instance()->startContainerTimer();
 #endif
-
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     // Set the accessibility after the application launched
     // because the chromium can generate huge amount of AXEvent during app loading.
     setUseAccessibility(WebAppManager::instance()->isAccessibilityEnabled());
 }
 
 void WebAppBase::showWindowSlot()
-{
+{    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     showWindow();
 }
 
 void WebAppBase::setAppDescription(ApplicationDescription* appDesc)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (d->m_appDesc) {
         delete d->m_appDesc;
         d->m_appDesc = 0;
@@ -377,7 +411,7 @@ void WebAppBase::setAppDescription(ApplicationDescription* appDesc)
 }
 
 void WebAppBase::setAppProperties(QString properties)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonDocument doc = QJsonDocument::fromJson(properties.toStdString().c_str());
     QJsonObject obj = doc.object();
 
@@ -391,7 +425,7 @@ void WebAppBase::setAppProperties(QString properties)
 }
 
 void WebAppBase::setPreloadState(QString properties)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonDocument doc = QJsonDocument::fromJson(properties.toStdString().c_str());
     QJsonObject obj = doc.object();
 
@@ -435,7 +469,7 @@ void WebAppBase::setPreloadState(QString properties)
 }
 
 void WebAppBase::clearPreloadState()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
    // set PreloadEnvironment needs attaching WebPageBase.
     if (!d->m_page) {
         m_preloadState = NONE_PRELOAD;
@@ -461,16 +495,18 @@ void WebAppBase::clearPreloadState()
 }
 
 void WebAppBase::setUiSize(int width, int height) {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->setUiSize(width, height);
 }
 
 void WebAppBase::webPageUrlChangedSlot()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     d->m_url = d->m_page->url().toString();
 }
 
 void WebAppBase::setPreferredLanguages(QString language)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!d->m_page)
         return;
     d->m_page->setPreferredLanguages(language);
@@ -478,7 +514,7 @@ void WebAppBase::setPreferredLanguages(QString language)
 }
 
 void WebAppBase::handleWebAppMessage(WebAppManager::WebAppMessageType type, const QString& message)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!d->m_page)
         return;
 
@@ -487,7 +523,7 @@ void WebAppBase::handleWebAppMessage(WebAppManager::WebAppMessageType type, cons
 }
 
 void WebAppBase::setUseAccessibility(bool enabled)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     bool useAccessibility = false;
 
     LOG_DEBUG("setUseAccessibility : supportsAudioGuidance = %s, LoadErrorPage = %s",
@@ -504,7 +540,7 @@ void WebAppBase::setUseAccessibility(bool enabled)
 }
 
 void WebAppBase::executeCloseCallback()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     connect(d->m_page, SIGNAL(closeCallbackExecuted()),this, SLOT(closeWebAppSlot()));
     connect(d->m_page, SIGNAL(timeoutExecuteCloseCallback()),this, SLOT(closeWebAppSlot()));
     connect(d->m_page, SIGNAL(closingAppProcessDidCrashed()),this, SLOT(closeWebAppSlot()));
@@ -513,7 +549,7 @@ void WebAppBase::executeCloseCallback()
 }
 
 void WebAppBase::closeWebAppSlot()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LOG_INFO(MSGID_CLEANRESOURCE_COMPLETED, 2, PMLOGKS("APP_ID", qPrintable(appId())), PMLOGKFV("PID", "%d", page()->getWebProcessPID()), "closeCallback/about:blank is DONE");
     WebAppManager::instance()->removeClosingAppList(appId());
 #ifdef PRELOADMANAGER_ENABLED
@@ -525,33 +561,36 @@ void WebAppBase::closeWebAppSlot()
 }
 
 void WebAppBase::dispatchUnload()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     connect(d->m_page, SIGNAL(didDispatchUnload()),this, SLOT(closeWebAppSlot()));
     connect(d->m_page, SIGNAL(closingAppProcessDidCrashed()),this, SLOT(closeWebAppSlot()));
     page()->cleanResources();
 }
 
 void WebAppBase::onCursorVisibilityChanged(const QString& jsscript)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->sendEventToAllAppsAndAllFrames(jsscript);
 }
 
 void WebAppBase::serviceCall(const QString& url, const QString& payload, const QString& appId)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LOG_INFO(MSGID_SERVICE_CALL, 2, PMLOGKS("APP_ID", qPrintable(appId)), PMLOGKS("URL", qPrintable(url)), "");
     WebAppManager::instance()->serviceCall(url, payload, appId);
 }
 
 void WebAppBase::keyboardVisibilityChanged(bool visible, int height) {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (page())
         page()->keyboardVisibilityChanged(visible);
 }
 
 bool WebAppBase::isClosing() const {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return d->m_page->isClosing();
 }
 
 bool WebAppBase::isCheckLaunchTimeEnabled()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->config()->isCheckLaunchTimeEnabled();
 }

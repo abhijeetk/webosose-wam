@@ -21,16 +21,16 @@ PalmServiceBase::PalmServiceBase()
     : m_serviceHandle(0)
     , m_serviceHandlePublic(0)
     , m_serviceHandlePrivate(0)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 }
 
 PalmServiceBase::~PalmServiceBase()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     stopService();
 }
 
 bool PalmServiceBase::startService()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LSErrorSafe lsError;
 
     if (!LSRegisterPalmService(serviceName(), &m_serviceHandle, &lsError) ) {
@@ -69,7 +69,7 @@ bool PalmServiceBase::startService()
 }
 
 void PalmServiceBase::stopService()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LSErrorSafe lsError;
     if (!LSUnregisterPalmService(m_serviceHandle, &lsError) ) {
         LOG_WARNING(MSGID_UNREG_LS2_FAIL, 2,
@@ -86,7 +86,7 @@ bool PalmServiceBase::call(
         QJsonObject parameters,
         const char* applicationId = 0,
         LSCalloutContext* context = 0)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LSErrorSafe lsError;
     bool callRet;
     if(parameters.value("subscribe").toBool() || parameters.value("watch").toBool()) {
@@ -139,14 +139,14 @@ bool PalmServiceBase::call(
     return true;
 }
 
-GMainLoop* PalmServiceBase::mainLoop() const {
+GMainLoop* PalmServiceBase::mainLoop() const {fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   static GMainLoop* s_mainLoop = NULL;
   if (!s_mainLoop)
       s_mainLoop = g_main_loop_new(NULL, false);
   return s_mainLoop;
 }
 
-bool LSCalloutContext::cancel() {
+bool LSCalloutContext::cancel() {fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
         if (m_token == LSMESSAGE_TOKEN_INVALID || m_service == 0) {
             LOG_WARNING(MSGID_LS2_CANCEL_NOT_ACTIVE, 0, "callout context not cancelled: not active");
             return false;

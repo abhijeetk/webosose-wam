@@ -44,6 +44,7 @@ static const int kContinuousReloadingLimit = 3;
 
 WebAppManager* WebAppManager::instance()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     // not a leak -- static variable initializations are only ever done once
     static WebAppManager* sInstance = new WebAppManager();
     return sInstance;
@@ -60,10 +61,12 @@ WebAppManager::WebAppManager()
     , m_suspendDelay(0)
     , m_isAccessibilityEnabled(false)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 }
 
 WebAppManager::~WebAppManager()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_containerAppManager)
         delete m_containerAppManager;
     if (m_serviceSender)
@@ -78,6 +81,7 @@ WebAppManager::~WebAppManager()
 
 void WebAppManager::notifyMemoryPressure(webos::WebViewBase::MemoryPressureLevel level)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     std::list<const WebAppBase*> appList = runningApps();
     for (auto it = appList.begin(); it != appList.end(); ++it) {
         const WebAppBase* app = *it;
@@ -88,6 +92,7 @@ void WebAppManager::notifyMemoryPressure(webos::WebViewBase::MemoryPressureLevel
 
 void WebAppManager::setPlatformModules(PlatformModuleFactory* factory)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_webAppManagerConfig = factory->getWebAppManagerConfig();
     m_containerAppManager = factory->getContainerAppManager();
     m_serviceSender = factory->getServiceSender();
@@ -100,16 +105,19 @@ void WebAppManager::setPlatformModules(PlatformModuleFactory* factory)
 
 bool WebAppManager::run()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     loadEnvironmentVariable();
     return true;
 }
 
 void WebAppManager::quit()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 }
 
 void WebAppManager::loadEnvironmentVariable()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_suspendDelay = m_webAppManagerConfig->getSuspendDelayTime();
     m_webAppManagerConfig->postInitConfiguration();
 
@@ -119,6 +127,7 @@ void WebAppManager::loadEnvironmentVariable()
 
 void WebAppManager::setUiSize(int width, int height)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_deviceInfo) {
         m_deviceInfo->setDisplayWidth(width);
         m_deviceInfo->setDisplayHeight(height);
@@ -127,6 +136,7 @@ void WebAppManager::setUiSize(int width, int height)
 
 int WebAppManager::currentUiWidth()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     int width = 0;
     if (m_deviceInfo)
         m_deviceInfo->getDisplayWidth(width);
@@ -135,6 +145,7 @@ int WebAppManager::currentUiWidth()
 
 int WebAppManager::currentUiHeight()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     int height = 0;
     if (m_deviceInfo)
         m_deviceInfo->getDisplayHeight(height);
@@ -143,12 +154,14 @@ int WebAppManager::currentUiHeight()
 
 bool WebAppManager::getSystemLanguage(QString &value)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_deviceInfo) return false;
     return m_deviceInfo->getSystemLanguage(value);
 }
 
 bool WebAppManager::getDeviceInfo(QString name, QString &value)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_deviceInfo) return false;
     return m_deviceInfo->getDeviceInfo(name, value);
 }
@@ -157,6 +170,7 @@ void WebAppManager::onLaunchContainerBasedApp(const std::string& url, QString& w
                                               const ApplicationDescription* appDesc,
                                               const std::string& args, const std::string& launchingAppId)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_containerAppManager)
         return;
 
@@ -257,6 +271,7 @@ void WebAppManager::onLaunchContainerBasedApp(const std::string& url, QString& w
 
 void WebAppManager::onRelaunchApp(const std::string& instanceId, const std::string& appId, const std::string& args, const std::string& launchingAppId)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppBase* app = findAppById(QString::fromStdString(appId));
 
     if (!app) {
@@ -280,6 +295,7 @@ void WebAppManager::onRelaunchApp(const std::string& instanceId, const std::stri
 
 std::string WebAppManager::onLaunchContainerApp(const std::string& appDesc)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     int errorCode = 0;
     std::string instanceId = generateInstanceId();
 
@@ -294,16 +310,19 @@ std::string WebAppManager::onLaunchContainerApp(const std::string& appDesc)
 
 bool WebAppManager::purgeSurfacePool(uint32_t pid)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return true; // Deprecated (2016-04-01)
 }
 
 bool WebAppManager::isDiscardCodeCacheRequired()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return false; // Deprecated (2016-04-01)
 }
 
 bool WebAppManager::setInspectorEnable(QString & appId)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
      // 1. find appId from then running App List,
     for (AppList::const_iterator it = m_appList.begin(); it != m_appList.end(); ++it) {
         WebAppBase* app = (*it);
@@ -318,11 +337,13 @@ bool WebAppManager::setInspectorEnable(QString & appId)
 
 void WebAppManager::discardCodeCache(uint32_t pid)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     // Deprecated (2016-04-01)
 }
 
 bool WebAppManager::onKillApp(const std::string& appId)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QString __appId = QString::fromStdString(appId);
     WebAppBase* app = findAppById(__appId);
     if (!app) {
@@ -336,6 +357,7 @@ bool WebAppManager::onKillApp(const std::string& appId)
 
 std::list<const WebAppBase*> WebAppManager::runningApps()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     std::list<const WebAppBase*> apps;
 
     for (AppList::const_iterator it = m_appList.begin(); it != m_appList.end(); ++it) {
@@ -347,6 +369,7 @@ std::list<const WebAppBase*> WebAppManager::runningApps()
 
 std::list<const WebAppBase*> WebAppManager::runningApps(uint32_t pid)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     std::list<const WebAppBase*> apps;
 
     for (AppList::const_iterator it = m_appList.begin(); it != m_appList.end(); ++it) {
@@ -364,6 +387,7 @@ WebAppBase* WebAppManager::onLaunchUrl(const std::string& url, QString winType,
                                        const std::string& args, const std::string& launchingAppId,
                                        int& errCode, std::string& errMsg)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppBase* app = WebAppFactoryManager::instance()->createWebApp(winType, (ApplicationDescription *)appDesc, appDesc->subType().c_str());
 
     if (!app) {
@@ -425,12 +449,14 @@ WebAppBase* WebAppManager::onLaunchUrl(const std::string& url, QString winType,
 
 void WebAppManager::forceCloseAppInternal(WebAppBase* app)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     app->setKeepAlive(false);
     closeAppInternal(app);
 }
 
 void WebAppManager::removeClosingAppList(const QString& appId)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QMap<QString, WebAppBase*>::iterator it = m_closingAppList.find(appId);
     if (it == m_closingAppList.end())
         return;
@@ -440,6 +466,7 @@ void WebAppManager::removeClosingAppList(const QString& appId)
 
 void WebAppManager::closeAppInternal(WebAppBase* app, bool ignoreCleanResource)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebPageBase* page = app->page();
     if (page && page->isClosing()) {
         LOG_INFO(MSGID_CLOSE_APP_INTERNAL, 2, PMLOGKS("APP_ID", qPrintable(app->appId())), PMLOGKFV("PID", "%d", app->page()->getWebProcessPID()), "In Closing; return");
@@ -484,6 +511,7 @@ void WebAppManager::closeAppInternal(WebAppBase* app, bool ignoreCleanResource)
 
 bool WebAppManager::closeAllApps(uint32_t pid)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     AppList runningApps;
 
     for (AppList::iterator it = m_appList.begin(); it != m_appList.end(); ++it) {
@@ -514,6 +542,7 @@ bool WebAppManager::closeAllApps(uint32_t pid)
 
 bool WebAppManager::closeContainerApp()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_containerAppManager)
         return false;
     m_containerAppManager->closeContainerApp();
@@ -523,6 +552,7 @@ bool WebAppManager::closeContainerApp()
 
 void WebAppManager::webPageAdded(WebPageBase* page)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_appPageMap.contains(page->appId().toStdString(), page))
         return;
 
@@ -531,6 +561,7 @@ void WebAppManager::webPageAdded(WebPageBase* page)
 
 void WebAppManager::webPageRemoved(WebPageBase* page)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_deletingPages) {
         // Remove from list of pending delete pages
         PageList::iterator iter = std::find(m_pagesToDeleteList.begin(), m_pagesToDeleteList.end(), page);
@@ -544,11 +575,13 @@ void WebAppManager::webPageRemoved(WebPageBase* page)
 
 void WebAppManager::removeWebAppFromWebProcessInfoMap(QString appId)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     // Deprecated (2016-04-01)
 }
 
 WebAppBase* WebAppManager::findAppById(const QString& appId)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     for (AppList::iterator it = m_appList.begin(); it != m_appList.end(); ++it) {
         WebAppBase* app = (*it);
 
@@ -561,6 +594,7 @@ WebAppBase* WebAppManager::findAppById(const QString& appId)
 
 WebAppBase* WebAppManager::findAppByInstanceId(const QString& instanceId)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     for (AppList::iterator it = m_appList.begin(); it != m_appList.end(); ++it) {
         WebAppBase* app = (*it);
 
@@ -573,6 +607,7 @@ WebAppBase* WebAppManager::findAppByInstanceId(const QString& instanceId)
 
 void WebAppManager::appDeleted(WebAppBase* app)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!app)
         return;
 
@@ -588,6 +623,7 @@ void WebAppManager::appDeleted(WebAppBase* app)
 
 void WebAppManager::setSystemLanguage(QString language)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_deviceInfo) return;
 
     m_deviceInfo->setSystemLanguage(language);
@@ -603,6 +639,7 @@ void WebAppManager::setSystemLanguage(QString language)
 
 void WebAppManager::setDeviceInfo(QString name, QString value)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_deviceInfo) return;
 
     QString oldValue;
@@ -615,6 +652,7 @@ void WebAppManager::setDeviceInfo(QString name, QString value)
 
 void WebAppManager::broadcastWebAppMessage(WebAppMessageType type, const QString& message)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     for (AppList::const_iterator it = m_appList.begin(); it != m_appList.end(); ++it) {
         WebAppBase* app = (*it);
         app->handleWebAppMessage(type, message);
@@ -629,11 +667,13 @@ void WebAppManager::broadcastWebAppMessage(WebAppMessageType type, const QString
 
 void WebAppManager::requestActivity(WebAppBase* app)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if(m_serviceSender)
         m_serviceSender->requestActivity(app);
 }
 
 bool WebAppManager::processCrashed(QString appId) {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_containerAppManager && (appId == m_containerAppManager->getContainerAppId())) {
         m_containerAppManager->setContainerAppReady(false);
 #ifndef PRELOADMANAGER_ENABLED
@@ -674,6 +714,7 @@ bool WebAppManager::processCrashed(QString appId) {
 
 const QString WebAppManager::windowTypeFromString(const std::string& str)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if(str == "overlay")
         return WT_OVERLAY;
     if(str == "popup")
@@ -689,6 +730,7 @@ const QString WebAppManager::windowTypeFromString(const std::string& str)
 
 void WebAppManager::setForceCloseApp(QString appId)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppBase *app = findAppById(appId);
     if (!app)
         return;
@@ -706,11 +748,13 @@ void WebAppManager::setForceCloseApp(QString appId)
 
 void WebAppManager::requestKillWebProcess(uint32_t pid)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     // Deprecated (2016-0401)
 }
 
 bool WebAppManager::shouldLaunchContainerAppOnDemand()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_containerAppManager)
         return  m_containerAppManager->getLaunchContainerAppOnDemand();
 
@@ -719,6 +763,7 @@ bool WebAppManager::shouldLaunchContainerAppOnDemand()
 
 uint32_t WebAppManager::getContainerAppProxyID()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_containerAppManager || m_containerAppManager->getContainerAppDescription().empty())
         return 0;
 
@@ -730,6 +775,7 @@ uint32_t WebAppManager::getContainerAppProxyID()
 
 void WebAppManager::deleteStorageData(const QString& identifier)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_webProcessManager->deleteStorageData(identifier);
 }
 
@@ -751,7 +797,7 @@ void WebAppManager::killCustomPluginProcess(const QString &basePath)
  */
 std::string WebAppManager::launch(const std::string& appDescString, const std::string& params,
         const std::string& launchingAppId, int& errCode, std::string& errMsg)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     ApplicationDescription* desc = ApplicationDescription::fromJsonString(appDescString.c_str());
     if (!desc)
         return std::string();
@@ -803,7 +849,7 @@ std::string WebAppManager::launch(const std::string& appDescString, const std::s
 }
 
 bool WebAppManager::isContainerApp(const std::string& url)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_containerAppManager)
         return false;
 
@@ -814,6 +860,7 @@ bool WebAppManager::isContainerApp(const std::string& url)
 }
 
 bool WebAppManager::isRunningApp(const std::string& id, std::string& instanceId) {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     std::list<const WebAppBase*> running = runningApps();
 
     QString appIdToFind = QString::fromStdString(id);
@@ -836,6 +883,7 @@ bool WebAppManager::isRunningApp(const std::string& id, std::string& instanceId)
 }
 
 bool WebAppManager::isContainerBasedApp(ApplicationDescription* containerBasedAppDesc) {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_containerAppManager || !m_containerAppManager->isContainerAppReady())
         return false;
 
@@ -855,12 +903,14 @@ bool WebAppManager::isContainerBasedApp(ApplicationDescription* containerBasedAp
 }
 
 bool WebAppManager::isContainerUsedApp(const ApplicationDescription* containerUsedAppDesc) {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return containerUsedAppDesc->containerJS().size()? true : false;
 
 }
 
 std::vector<ApplicationInfo> WebAppManager::list( bool includeSystemApps )
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     std::vector<ApplicationInfo> list;
 
     std::list<const WebAppBase*> running = runningApps();
@@ -877,12 +927,14 @@ std::vector<ApplicationInfo> WebAppManager::list( bool includeSystemApps )
 
 QJsonObject WebAppManager::getWebProcessProfiling()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return m_webProcessManager->getWebProcessProfiling();
 }
 
 #ifndef PRELOADMANAGER_ENABLED
 void WebAppManager::sendLaunchContainerApp()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_containerAppManager)
         return;
 
@@ -894,41 +946,47 @@ void WebAppManager::sendLaunchContainerApp()
 
 void WebAppManager::startContainerTimer()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_containerAppManager)
         m_containerAppManager->startContainerTimer();
 }
 
 void WebAppManager::restartContainerApp()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_containerAppManager)
         m_containerAppManager->restartContainerApp();
 }
 #else
 void WebAppManager::insertAppIntoList(WebAppBase* app)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_appList.push_back(app);
 }
 
 void WebAppManager::deleteAppIntoList(WebAppBase* app)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_appList.remove(app);
 }
 #endif
 
 void WebAppManager::closeApp(const std::string& appId)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_serviceSender)
         m_serviceSender->closeApp(appId);
 }
 
 void WebAppManager::reloadContainerApp()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_containerAppManager)
         m_containerAppManager->reloadContainerApp();
 }
 
 QString& WebAppManager::getContainerAppId()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     static QString nullStr = "";
 
     if (m_containerAppManager)
@@ -938,7 +996,7 @@ QString& WebAppManager::getContainerAppId()
 }
 
 WebAppBase* WebAppManager::getContainerApp()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_containerAppManager)
         return m_containerAppManager->getContainerApp();
 
@@ -946,19 +1004,19 @@ WebAppBase* WebAppManager::getContainerApp()
 }
 
 void WebAppManager::setContainerAppReady(bool ready)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_containerAppManager)
         m_containerAppManager->setContainerAppReady(ready);
 }
 
 void WebAppManager::setContainerAppLaunched(bool launched)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_containerAppManager)
         m_containerAppManager->setContainerAppLaunched(launched);
 }
 
 void WebAppManager::postRunningAppList()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_serviceSender)
         return;
 
@@ -967,7 +1025,7 @@ void WebAppManager::postRunningAppList()
 }
 
 void WebAppManager::postWebProcessCreated(const QString& appId, uint32_t pid)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_serviceSender)
         return;
 
@@ -978,7 +1036,7 @@ void WebAppManager::postWebProcessCreated(const QString& appId, uint32_t pid)
 }
 
 uint32_t WebAppManager::getWebProcessId(const QString& appId)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     uint32_t pid = 0;
     WebAppBase* app = findAppById(appId);
 
@@ -989,7 +1047,7 @@ uint32_t WebAppManager::getWebProcessId(const QString& appId)
 }
 
 std::string WebAppManager::generateInstanceId()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     static int s_nextProcessId = 1000;
     std::ostringstream stream;
     stream << (s_nextProcessId++);
@@ -998,7 +1056,7 @@ std::string WebAppManager::generateInstanceId()
 }
 
 void WebAppManager::setAccessibilityEnabled(bool enabled)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_isAccessibilityEnabled == enabled)
         return;
 
@@ -1013,7 +1071,7 @@ void WebAppManager::setAccessibilityEnabled(bool enabled)
 }
 
 void WebAppManager::sendEventToAllAppsAndAllFrames(const QString& jsscript)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     for (auto it = m_appList.begin(); it != m_appList.end(); ++it) {
         WebAppBase* app = (*it);
         if (app->page()) {
@@ -1025,13 +1083,13 @@ void WebAppManager::sendEventToAllAppsAndAllFrames(const QString& jsscript)
 }
 
 void WebAppManager::serviceCall(const QString& url, const QString& payload, const QString& appId)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_serviceSender)
         m_serviceSender->serviceCall(url, payload, appId);
 }
 
 void WebAppManager::updateNetworkStatus(const QJsonObject& object)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     NetworkStatus status;
     status.fromJsonObject(object);
 
@@ -1040,7 +1098,7 @@ void WebAppManager::updateNetworkStatus(const QJsonObject& object)
 }
 
 bool WebAppManager::isEnyoApp(const QString& appId)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppBase* app = findAppById(appId);
     if (app && !app->getAppDescription()->enyoVersion().empty())
         return true;
@@ -1049,11 +1107,11 @@ bool WebAppManager::isEnyoApp(const QString& appId)
 }
 
 void WebAppManager::clearBrowsingData(const int removeBrowsingDataMask)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_webProcessManager->clearBrowsingData(removeBrowsingDataMask);
 }
 
 int WebAppManager::maskForBrowsingDataType(const char* type)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return m_webProcessManager->maskForBrowsingDataType(type);
 }

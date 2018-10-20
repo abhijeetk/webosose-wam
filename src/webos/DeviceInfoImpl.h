@@ -18,7 +18,7 @@
 #define DEVICEINFOIMPL_H
 
 #include "DeviceInfo.h"
-
+#include <unistd.h>
 class DeviceInfoImpl : public DeviceInfo {
 public:
     DeviceInfoImpl();

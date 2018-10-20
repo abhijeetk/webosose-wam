@@ -18,7 +18,7 @@
 #define BLINKWEBPROCESSMANAGER_H
 
 #include "WebProcessManager.h"
-
+#include <unistd.h>
 class QString;
 class WebAppBase;
 

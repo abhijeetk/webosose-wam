@@ -33,6 +33,7 @@
 
 bool ApplicationDescription::checkTrustLevel(std::string trustLevel)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (trustLevel.empty())
         return false;
     if (trustLevel.compare("default") == 0)
@@ -61,12 +62,13 @@ ApplicationDescription::ApplicationDescription()
     , m_networkStableTimeout(std::numeric_limits<double>::quiet_NaN())
     , m_disallowScrollingInMainFrame(true)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 }
 
 const ApplicationDescription::WindowGroupInfo ApplicationDescription::getWindowGroupInfo()
 {
     ApplicationDescription::WindowGroupInfo info;
-
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_groupWindowDesc.empty()) {
         QJsonDocument jsonDoc = QJsonDocument::fromJson(QByteArray(m_groupWindowDesc.c_str()));
         QJsonObject jsonObject = jsonDoc.object();
@@ -82,6 +84,7 @@ const ApplicationDescription::WindowGroupInfo ApplicationDescription::getWindowG
 
 const ApplicationDescription::WindowOwnerInfo ApplicationDescription::getWindowOwnerInfo()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     ApplicationDescription::WindowOwnerInfo info;
     if (!m_groupWindowDesc.empty()) {
         QJsonDocument jsonDoc = QJsonDocument::fromJson(QByteArray(m_groupWindowDesc.c_str()));
@@ -109,6 +112,7 @@ const ApplicationDescription::WindowOwnerInfo ApplicationDescription::getWindowO
 
 const ApplicationDescription::WindowClientInfo ApplicationDescription::getWindowClientInfo()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     ApplicationDescription::WindowClientInfo info;
     if (!m_groupWindowDesc.empty()) {
         QJsonDocument jsonDoc = QJsonDocument::fromJson(QByteArray(m_groupWindowDesc.c_str()));
@@ -128,6 +132,7 @@ const ApplicationDescription::WindowClientInfo ApplicationDescription::getWindow
 
 ApplicationDescription* ApplicationDescription::fromJsonString(const char* jsonStr)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonParseError parseError;
     QJsonDocument jsonDoc = QJsonDocument::fromJson(QByteArray(jsonStr), &parseError);
     if (parseError.error != QJsonParseError::NoError) {

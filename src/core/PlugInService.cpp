@@ -20,15 +20,18 @@
 
 WebAppBase* PlugInService::findAppById(QString appId)
 {
+	fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->findAppById(appId);
 }
 
 QString PlugInService::getActiveAppId()
 {
+	fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->getActiveAppId();
 }
 
 std::list<const WebAppBase*> PlugInService::runningApps()
 {
+	fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->runningApps();
 }

@@ -20,18 +20,22 @@
 class WamSocketLockFile {
 public:
   ~WamSocketLockFile() {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (lock_fd_ != -1)
       releaseLock(lock_fd_);
     if (lock_fd_ != -1)
       close(lock_fd_);
+    fprintf(stderr, "<END>[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   }
 
   bool createAndLock() {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     lock_fd_ = openLockFile();
     if (!acquireLock(lock_fd_)) {
       fprintf(stderr, "Failed to lock file %d\r\n", lock_fd_);
       return false;
     }
+    fprintf(stderr, "<END>[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return true;
   }
 
@@ -40,13 +44,16 @@ public:
   }
 
   bool tryAcquireLock() {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     int fd = openLockFile();
     if (fd != -1) {
       if (acquireLock(fd)) {
         releaseLock(fd);
+        fprintf(stderr, "<END>[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
         return true;
       }
     }
+    fprintf(stderr, "<END>[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return false;
   }
 
@@ -94,6 +101,7 @@ public:
 
   bool createSocket(bool server) {
         // Create the socket file descriptor
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     socket_fd_ = socket(AF_UNIX, SOCK_DGRAM, 0);
     if (socket_fd_ == -1) {
       fprintf(stderr, "Failed to open socket file descriptor\r\n");
@@ -117,10 +125,12 @@ public:
         return false;
       }
     }
+    fprintf(stderr, "<END>[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return true;
   }
 
   void sendMsg(int argc, const char **argv) {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     std::string cmd;
     for (int i = 0; i < argc; ++i)
       cmd.append(argv[i]).append(" ");
@@ -130,12 +140,14 @@ public:
     std::cout << "Sending message=[" << cmd << "]" << std::endl;
     ssize_t bytes = write(socket_fd_, cmd.c_str(), cmd.length());
     std::cout << "Wrote " << bytes << "bytes" << std::endl;
+    fprintf(stderr, "<END>[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   }
 
   int waitForMsg() {
     char buf[PATH_MAX] = {};
     ssize_t bytes;
 
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     std::cout << "Waiting for data..." << std::endl;
     while (TEMP_FAILURE_RETRY((bytes = recv(socket_fd_, (void *)buf, sizeof(buf), 0)) != -1)) {
       int last = bytes - 1;
@@ -153,8 +165,10 @@ public:
 
       WebAppManagerServiceAGL::instance()->setStartupApplication(std::string(res[0]), std::string(res[1]), atoi(res[2]));
       WebAppManagerServiceAGL::instance()->triggerStartupApp();
+      fprintf(stderr, "<END>[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
       return 1;
     }
+    fprintf(stderr, "<END>[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return 0;
   }
 
@@ -172,45 +186,57 @@ WebAppManagerServiceAGL::WebAppManagerServiceAGL()
 }
 
 WebAppManagerServiceAGL* WebAppManagerServiceAGL::instance() {
+  fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   static WebAppManagerServiceAGL *srv = new WebAppManagerServiceAGL();
   return srv;
 }
 
 bool WebAppManagerServiceAGL::initializeAsHostService() {
+  fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   if (lock_file_->createAndLock())
     return socket_->createSocket(true);
   return false;
 }
 
 bool WebAppManagerServiceAGL::initializeAsHostClient() {
+  fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   return socket_->createSocket(false);
 }
 
 bool WebAppManagerServiceAGL::isHostServiceRunning()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return !lock_file_->tryAcquireLock();
 }
 
 void WebAppManagerServiceAGL::launchOnHost(int argc, const char **argv)
 {
+    fprintf(stderr, "Sending .... %s %s %d\r\n", __FILE__, __FUNCTION__, __LINE__);
+    for (int i = 0; i < argc; i++)
+      fprintf(stderr, "%d. %s\r\n", i, argv[i]);     
+
     socket_->sendMsg(argc, argv);
 }
 
 void WebAppManagerServiceAGL::setStartupApplication(const std::string& startup_app_id, const std::string& startup_app_uri, int startup_app_surface_id)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     startup_app_id_ = startup_app_id;
     startup_app_uri_ = startup_app_uri;
     startup_app_surface_id_ = startup_app_surface_id;
 }
 
 void *run_socket(void *socket) {
+  fprintf(stderr, "Waiting for message : %s %d\r\n", __FUNCTION__, __LINE__);
   WamSocket *s = (WamSocket*)socket;
   while(s->waitForMsg());
+  fprintf(stderr, "Execute message : %s %d\r\n", __FUNCTION__, __LINE__);
   return 0;
 }
 
 bool WebAppManagerServiceAGL::startService()
 {
+    fprintf(stderr, "START : %s %d\r\n", __FUNCTION__, __LINE__);
     if (lock_file_->ownsLock()) {
       pthread_t thread_id;
       if( pthread_create( &thread_id , nullptr,  run_socket, socket_.get()) < 0) {
@@ -221,12 +247,13 @@ bool WebAppManagerServiceAGL::startService()
     }
 
     triggerStartupApp();
-
+    fprintf(stderr, "END : %s %d\r\n", __FUNCTION__, __LINE__);
     return true;
 }
 
 void WebAppManagerServiceAGL::triggerStartupApp()
 {
+    fprintf(stderr, "START : %s %d\r\n", __FUNCTION__, __LINE__);
     if (!startup_app_uri_.empty()) {
       if (startup_app_uri_.find("http://") == 0) {
         startup_app_timer_.start(1000, this,
@@ -236,10 +263,12 @@ void WebAppManagerServiceAGL::triggerStartupApp()
               &WebAppManagerServiceAGL::launchStartupAppFromConfig);
       }
     }
+    fprintf(stderr, "END : %s %d\r\n", __FUNCTION__, __LINE__);
 }
 
 void WebAppManagerServiceAGL::launchStartupAppFromConfig()
 {
+    fprintf(stderr, "START : %s %d\r\n", __FUNCTION__, __LINE__);
     std::string configfile;
     configfile.append(startup_app_uri_);
     configfile.append("/config.xml");
@@ -307,12 +336,13 @@ void WebAppManagerServiceAGL::launchStartupAppFromConfig()
     int errCode = 0;
     std::string errMsg;
     WebAppManagerService::onLaunch(appDesc, params, app_id, errCode, errMsg);
+    fprintf(stderr, "END : %s %d\r\n", __FUNCTION__, __LINE__);
 }
 
 void WebAppManagerServiceAGL::launchStartupAppFromURL()
 {
-fprintf(stderr, "WebAppManagerServiceAGL::launchStartupAppFromURL\r\n");
-fprintf(stderr, "    url: %s\r\n", startup_app_uri_.c_str());
+    fprintf(stderr, "WebAppManagerServiceAGL::launchStartupAppFromURL\r\n");
+    fprintf(stderr, "    url: %s\r\n", startup_app_uri_.c_str());
     QJsonObject obj;
     obj["id"] = QJsonValue((const char*)startup_app_id_.c_str());
     obj["version"] = QJsonValue("1.0");
@@ -332,6 +362,7 @@ fprintf(stderr, "    url: %s\r\n", startup_app_uri_.c_str());
     int errCode = 0;
     std::string errMsg;
     WebAppManagerService::onLaunch(appDesc, params, app_id, errCode, errMsg);
+        fprintf(stderr, "END %s %d\r\n", __FUNCTION__, __LINE__);
 }
 
 QJsonObject WebAppManagerServiceAGL::launchApp(QJsonObject request)

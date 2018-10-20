@@ -19,7 +19,7 @@
 
 #include <string>
 #include <vector>
-
+#include <unistd.h>
 class WebAppManagerUtils {
 public:
     static int updateAndGetCpuIdle(bool updateOnly = false);

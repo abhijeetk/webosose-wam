@@ -23,7 +23,7 @@
 #include <QJsonObject>
 #include <QObject>
 #include <luna-service2/lunaservice.h>
-
+#include <unistd.h>
 class LSHandle;
 class LSMessage;
 class LSPalmService;

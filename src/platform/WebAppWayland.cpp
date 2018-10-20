@@ -32,7 +32,7 @@ static int kLaunchFinishAssureTimeoutMs = 5000;
 
 #define URL_SIZE_LIMIT 512
 static QString truncateURL(const QString& url)
-{
+{  fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if(url.size() < URL_SIZE_LIMIT)
         return url;
     QString res = QString(url);
@@ -49,7 +49,7 @@ WebAppWayland::WebAppWayland(QString type, int surface_id, int width, int height
     , m_isFocused(false)
     , m_vkbHeight(0)
     , m_lostFocusBySetWindowProperty(false)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     init(width, height, surface_id);
 }
 
@@ -62,7 +62,7 @@ WebAppWayland::WebAppWayland(QString type, WebAppWaylandWindow* window, int widt
     , m_isFocused(false)
     , m_vkbHeight(0)
     , m_lostFocusBySetWindowProperty(false)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     init(width, height, 0);
 }
 
@@ -72,7 +72,7 @@ WebAppWayland::~WebAppWayland()
 }
 
 void WebAppWayland::init(int width, int height, int surface_id)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_appWindow)
         m_appWindow = WebAppWaylandWindow::take(surface_id);
     m_appWindow->SetWindowSurfaceId(surface_id);
@@ -105,7 +105,7 @@ void WebAppWayland::init(int width, int height, int surface_id)
 }
 
 void WebAppWayland::startLaunchTimer()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if(!getHiddenWindow()) {
         LOG_DEBUG("APP_LAUNCHTIME_CHECK_STARTED [appId:%s]", qPrintable(appId()));
         m_elapsedLaunchTimer.start();
@@ -113,7 +113,7 @@ void WebAppWayland::startLaunchTimer()
 }
 
 void WebAppWayland::onDelegateWindowFrameSwapped()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if(m_elapsedLaunchTimer.isRunning()) {
         m_lastSwappedTime = m_elapsedLaunchTimer.elapsed_ms();
 
@@ -125,7 +125,7 @@ void WebAppWayland::onDelegateWindowFrameSwapped()
 }
 
 void WebAppWayland::onLaunchTimeout()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if(m_elapsedLaunchTimer.isRunning()) {
         m_launchTimeoutTimer.stop();
         m_elapsedLaunchTimer.stop();
@@ -134,12 +134,12 @@ void WebAppWayland::onLaunchTimeout()
 }
 
 void WebAppWayland::forwardWebOSEvent(WebOSEvent* event) const
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     page()->forwardEvent(event);
 }
 
 void WebAppWayland::attach(WebPageBase *page)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppBase::attach(page);
 
     setWindowProperty(QStringLiteral("appId"), appId());
@@ -166,44 +166,44 @@ void WebAppWayland::attach(WebPageBase *page)
 }
 
 void WebAppWayland::suspendAppRendering()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_appWindow->hide();
 }
 
 void WebAppWayland::resumeAppRendering()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_appWindow->show();
 }
 
 bool WebAppWayland::isFocused() const
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return m_isFocused;
 }
 
 void WebAppWayland::resize(int width, int height)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_appWindow->Resize(width, height);
 }
 
 bool WebAppWayland::isActivated() const
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return m_appWindow->GetWindowHostState() == webos::NATIVE_WINDOW_FULLSCREEN
         || m_appWindow->GetWindowHostState() == webos::NATIVE_WINDOW_MAXIMIZED
         || m_appWindow->GetWindowHostState() == webos::NATIVE_WINDOW_DEFAULT;
 }
 
 bool WebAppWayland::isMinimized()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return m_appWindow->GetWindowHostState() == webos::NATIVE_WINDOW_MINIMIZED;
 }
 
 bool WebAppWayland::isNormal()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return m_appWindow->GetWindowHostState() == webos::NATIVE_WINDOW_DEFAULT;
 }
 
 void WebAppWayland::onStageActivated()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (getCrashState()) {
         LOG_INFO(MSGID_WEBAPP_STAGE_ACITVATED, 3, PMLOGKS("APP_ID", qPrintable(appId())), PMLOGKFV("PID", "%d", page()->getWebProcessPID()), PMLOGKS("getCrashState()", "true; Reload default Page"), "");
         page()->reloadDefaultPage();
@@ -224,7 +224,7 @@ void WebAppWayland::onStageActivated()
 }
 
 void WebAppWayland::onStageDeactivated()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     page()->suspendWebPageMedia();
     unfocus();
     page()->setVisibilityState(WebPageBase::WebPageVisibilityState::WebPageVisibilityStateHidden);
@@ -234,7 +234,7 @@ void WebAppWayland::onStageDeactivated()
 }
 
 void WebAppWayland::configureWindow(QString& type)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_windowType = type;
     m_appWindow->setWebApp(this);
 
@@ -263,7 +263,7 @@ void WebAppWayland::configureWindow(QString& type)
 }
 
 void WebAppWayland::setupWindowGroup(ApplicationDescription* desc)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!desc)
         return;
 
@@ -290,12 +290,12 @@ void WebAppWayland::setupWindowGroup(ApplicationDescription* desc)
 }
 
 void WebAppWayland::setKeyMask(webos::WebOSKeyMask keyMask, bool value)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_appWindow->SetKeyMask(keyMask, value);
 }
 
 void WebAppWayland::applyInputRegion()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 #if defined(OS_WEBOS)
     if (!m_enableInputRegion && !m_inputRegion.empty()) {
         m_enableInputRegion = true;
@@ -305,7 +305,7 @@ void WebAppWayland::applyInputRegion()
 }
 
 void WebAppWayland::setInputRegion(const QJsonDocument& jsonDoc)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_inputRegion.clear();
 
     if (jsonDoc.isArray()) {
@@ -327,7 +327,7 @@ void WebAppWayland::setInputRegion(const QJsonDocument& jsonDoc)
 
 
 void WebAppWayland::setWindowProperty(const QString& name, const QVariant& value)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     webos::WebOSKeyMask mask = static_cast<webos::WebOSKeyMask>(0);
     if (name == "_WEBOS_ACCESS_POLICY_KEYS_BACK")
         mask = webos::WebOSKeyMask::KEY_MASK_BACK;
@@ -340,17 +340,17 @@ void WebAppWayland::setWindowProperty(const QString& name, const QVariant& value
 }
 
 void WebAppWayland::platformBack()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_appWindow->platformBack();
 }
 
 void WebAppWayland::setCursor(const QString& cursorArg, int hotspot_x, int hotspot_y)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_appWindow->setCursor(cursorArg, hotspot_x, hotspot_y);
 }
 
 static QMap<QString, webos::WebOSKeyMask>& getKeyMaskTable()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     static QMap<QString, webos::WebOSKeyMask> mapTable;
 
     if (mapTable.isEmpty()) {
@@ -378,7 +378,7 @@ static QMap<QString, webos::WebOSKeyMask>& getKeyMaskTable()
 }
 
 void WebAppWayland::setKeyMask(const QJsonDocument& jsonDoc)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     static QMap<QString, webos::WebOSKeyMask>& mapTable = getKeyMaskTable();
     unsigned int keyMask = 0;
 
@@ -394,20 +394,20 @@ void WebAppWayland::setKeyMask(const QJsonDocument& jsonDoc)
 }
 
 void WebAppWayland::setKeyMask(webos::WebOSKeyMask keyMask)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 #if defined(OS_WEBOS)
     webos::WebOSPlatform::GetInstance()->SetKeyMask(m_windowHandle, keyMask);
 #endif
 }
 
 void WebAppWayland::focusOwner()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_appWindow->FocusWindowGroupOwner();
     LOG_DEBUG("FocusOwner [%s]", qPrintable(appId()));
 }
 
 void WebAppWayland::focusLayer()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_appWindow->FocusWindowGroupLayer();
     ApplicationDescription * desc = getAppDescription();
     if (desc) {
@@ -417,12 +417,12 @@ void WebAppWayland::focusLayer()
 }
 
 void WebAppWayland::setOpacity(float opacity)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_appWindow->SetOpacity(opacity);
 }
 
 void WebAppWayland::hide(bool forcedHide)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (keepAlive() || forcedHide) {
         m_appWindow->hide();
         setHiddenWindow(true);
@@ -430,20 +430,20 @@ void WebAppWayland::hide(bool forcedHide)
 }
 
 void WebAppWayland::focus()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_isFocused = true;
     if(!isMinimized())
         page()->setFocus(true);
 }
 
 void WebAppWayland::unfocus()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_isFocused = false;
     page()->setFocus(false);
 }
 
 void WebAppWayland::doAttach()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     // Do App and window things
     ApplicationDescription* appDesc = getAppDescription();
     if (!appDesc->groupWindowDesc().empty())
@@ -468,7 +468,7 @@ void WebAppWayland::doAttach()
 }
 
 void WebAppWayland::raise()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     bool wasMinimizedState = isMinimized();
 
     //There's no fullscreen event from LSM for below cases, so onStageActivated should be called
@@ -487,7 +487,7 @@ void WebAppWayland::raise()
 }
 
 void WebAppWayland::goBackground()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (getWindowType() == WT_OVERLAY) {
         LOG_INFO(MSGID_WAM_DEBUG, 2, PMLOGKS("APP_ID", qPrintable(appId())), PMLOGKFV("PID", "%d", page()->getWebProcessPID()), "WebAppWayland::goBackground(); windowType:OVERLAY; Try close; call doClose()");
         doClose();
@@ -498,7 +498,7 @@ void WebAppWayland::goBackground()
 }
 
 void WebAppWayland::webPageLoadFinishedSlot()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (getHiddenWindow())
         return;
     if(needReload()) {
@@ -519,14 +519,14 @@ void WebAppWayland::webPageLoadFinishedSlot()
 }
 
 void WebAppWayland::webPageLoadFailedSlot(int errorCode)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     // Do not load error page while preoload app launching.
     if (preloadState() != NONE_PRELOAD)
         closeAppInternal();
 }
 
 void WebAppWayland::doClose()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (forceClose()) {
         LOG_INFO(MSGID_WAM_DEBUG, 2, PMLOGKS("APP_ID", qPrintable(appId())), PMLOGKFV("PID", "%d", page()->getWebProcessPID()), "WebAppWayland::doClose(); forceClose() TRUE; call forceCloseAppInternal() and return");
         forceCloseAppInternal();
@@ -548,7 +548,7 @@ void WebAppWayland::doClose()
 }
 
 void WebAppWayland::stateAboutToChange(webos::NativeWindowState willBe)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (willBe == webos::NATIVE_WINDOW_MINIMIZED) {
         LOG_INFO(MSGID_WAM_DEBUG, 2, PMLOGKS("APP_ID", qPrintable(appId())), PMLOGKFV("PID", "%d", page()->getWebProcessPID()), "WebAppWayland::stateAboutToChange; will be Minimized; suspend media and fire visibilitychange event");
         page()->suspendWebPageMedia();
@@ -557,7 +557,7 @@ void WebAppWayland::stateAboutToChange(webos::NativeWindowState willBe)
 }
 
 void WebAppWayland::showWindow()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     setForceActivateVtgIfRequired();
 
     if (m_preloadState != NONE_PRELOAD) {
@@ -573,17 +573,17 @@ void WebAppWayland::showWindow()
 }
 
 void WebAppWayland::showWindowSlot()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     showWindow();
 }
 
 void WebAppWayland::titleChanged()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     setWindowProperty(QStringLiteral("subtitle"), page()->title());
 }
 
 void WebAppWayland::firstFrameVisuallyCommitted()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LOG_INFO(MSGID_WAM_DEBUG, 2, PMLOGKS("APP_ID", qPrintable(appId())), PMLOGKFV("PID", "%d", page()->getWebProcessPID()), "firstFrameVisuallyCommitted");
     // if m_preloadState != NONE_PRELOAD, then we must ignore the first frame commit
     // if getHiddenWindow() == true, then we have specifically requested that the window is to be hidden,
@@ -595,12 +595,12 @@ void WebAppWayland::firstFrameVisuallyCommitted()
 }
 
 void WebAppWayland::postEvent(WebOSEvent* ev)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_appWindow->event(ev);
 }
 
 void WebAppWayland::navigationHistoryChanged()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!getAppDescription()->backHistoryAPIDisabled()) {
         // if backHistoryAPIDisabled is true, no chance to change this value
         setWindowProperty(QStringLiteral("_WEBOS_ACCESS_POLICY_KEYS_BACK"),
@@ -611,7 +611,7 @@ void WebAppWayland::navigationHistoryChanged()
 }
 
 void WebAppWayland::webViewRecreatedSlot()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_appWindow->attachWebContents(page()->getWebContents());
     m_appWindow->RecreatedWebContents();
     page()->setPageProperties();
@@ -619,7 +619,7 @@ void WebAppWayland::webViewRecreatedSlot()
 }
 
 void WebAppWayland::setForceActivateVtgIfRequired()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QString screenRotation;
 
     if (WebAppManager::instance() && page()) {
@@ -631,7 +631,7 @@ void WebAppWayland::setForceActivateVtgIfRequired()
 }
 
 void InputManager::OnCursorVisibilityChanged(bool visible)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (IsVisible() == visible) return;
 
     LOG_DEBUG("InputManager::onCursorVisibilityChanged; Global Cursor visibility Changed to %s; send cursorStateChange event to all app, all frames", visible? "true" : " false");
@@ -650,7 +650,7 @@ void InputManager::OnCursorVisibilityChanged(bool visible)
 }
 
 void WebAppWayland::sendWebOSMouseEvent(const QString& eventName)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (eventName == "Enter" || eventName == "Leave") {
         // send webOSMouse event to app
         QString javascript = QStringLiteral(
@@ -663,19 +663,19 @@ void WebAppWayland::sendWebOSMouseEvent(const QString& eventName)
 }
 
 void WebAppWayland::deleteSurfaceGroup()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_appWindow->DetachWindowGroup();
 }
 
 void WebAppWayland::setKeepAlive(bool keepAlive)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppBase::setKeepAlive(keepAlive);
     if (page())
         page()->setKeepAliveWebApp(keepAlive);
 }
 
 void WebAppWayland::moveInputRegion(int height)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_enableInputRegion)
         return;
 
@@ -702,6 +702,7 @@ void WebAppWayland::moveInputRegion(int height)
 }
 
 void WebAppWayland::keyboardVisibilityChanged(bool visible, int height) {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppBase::keyboardVisibilityChanged(visible, height);
     moveInputRegion(height);
 }

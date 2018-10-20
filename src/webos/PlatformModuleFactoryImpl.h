@@ -18,7 +18,7 @@
 #define PLATFORMMODULEFACTORYIMPL_H
 
 #include "PlatformModuleFactory.h"
-
+#include <unistd.h>
 class ServiceSender;
 class WebProcessManager;
 class ContainerAppManager;

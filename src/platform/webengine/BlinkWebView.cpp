@@ -26,20 +26,24 @@ BlinkWebView::BlinkWebView(bool doInitialize)
     , m_progress(0)
     , m_userScriptExecuted(false)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 }
 
 void BlinkWebView::addUserScript(const std::string& script)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_userScripts.push_back(script);
 }
 
 void BlinkWebView::clearUserScripts()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_userScripts.clear();
 }
 
 void BlinkWebView::executeUserScripts()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_userScriptExecuted)
         return;
 
@@ -51,11 +55,13 @@ void BlinkWebView::executeUserScripts()
 
 void BlinkWebView::setDelegate(WebPageBlinkDelegate* delegate)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_delegate = delegate;
 }
 
 void BlinkWebView::HandleBrowserControlCommand(const std::string& command, const std::vector<std::string>& arguments)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_delegate) {
         QString message = QString::fromStdString(command);
         QStringList params;
@@ -67,6 +73,7 @@ void BlinkWebView::HandleBrowserControlCommand(const std::string& command, const
 
 void BlinkWebView::HandleBrowserControlFunction(const std::string& command, const std::vector<std::string>& arguments, std::string* result)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_delegate) {
         QString message = QString::fromStdString(command);
         QStringList params;
@@ -80,12 +87,14 @@ void BlinkWebView::HandleBrowserControlFunction(const std::string& command, cons
 
 void BlinkWebView::OnLoadProgressChanged(double progress)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_progress = (int)(progress * 100);
     LOG_INFO(MSGID_PAGE_LOADING, 1, PMLOGKS("", ""), "PROGRESS: %d%%", m_progress);
 }
 
 void BlinkWebView::Close()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_delegate)
       return;
 
@@ -95,6 +104,7 @@ void BlinkWebView::Close()
 bool BlinkWebView::DecidePolicyForResponse(bool isMainFrame, int statusCode,
                                            const std::string& url, const std::string& statusText)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_delegate)
       return false;
 
@@ -103,6 +113,7 @@ bool BlinkWebView::DecidePolicyForResponse(bool isMainFrame, int statusCode,
 
 bool BlinkWebView::AcceptsVideoCapture()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   if (!m_delegate)
     return false;
 
@@ -111,6 +122,7 @@ bool BlinkWebView::AcceptsVideoCapture()
 
 bool BlinkWebView::AcceptsAudioCapture()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   if (!m_delegate)
     return false;
 
@@ -119,6 +131,7 @@ bool BlinkWebView::AcceptsAudioCapture()
 
 void BlinkWebView::DidDropAllPeerConnections(webos::DropPeerConnectionReason reason)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_delegate)
         return;
 
@@ -128,6 +141,7 @@ void BlinkWebView::DidDropAllPeerConnections(webos::DropPeerConnectionReason rea
 
 void BlinkWebView::DidFirstFrameFocused()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_delegate)
       return;
 
@@ -136,11 +150,13 @@ void BlinkWebView::DidFirstFrameFocused()
 
 void BlinkWebView::DocumentLoadFinished()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     executeUserScripts();
 }
 
 void BlinkWebView::LoadVisuallyCommitted()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_delegate)
       return;
 
@@ -149,6 +165,7 @@ void BlinkWebView::LoadVisuallyCommitted()
 
 void BlinkWebView::LoadFinished(const std::string& url)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_delegate)
       return;
 
@@ -161,6 +178,7 @@ void BlinkWebView::LoadFinished(const std::string& url)
 
 void BlinkWebView::LoadFailed(const std::string& url, int errCode, const std::string& errDesc)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_delegate)
         return;
 
@@ -169,6 +187,7 @@ void BlinkWebView::LoadFailed(const std::string& url, int errCode, const std::st
 
 void BlinkWebView::LoadStopped(const std::string& url)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_delegate)
         return;
 
@@ -177,6 +196,7 @@ void BlinkWebView::LoadStopped(const std::string& url)
 
 void BlinkWebView::LoadStarted()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_userScriptExecuted = false;
 
     if (!m_delegate)
@@ -187,6 +207,7 @@ void BlinkWebView::LoadStarted()
 
 void BlinkWebView::RenderProcessCreated(int pid)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_delegate)
       return;
 
@@ -195,6 +216,7 @@ void BlinkWebView::RenderProcessCreated(int pid)
 
 void BlinkWebView::RenderProcessGone()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_delegate)
         return;
 
@@ -203,6 +225,7 @@ void BlinkWebView::RenderProcessGone()
 
 void BlinkWebView::TitleChanged(const std::string& title)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_delegate)
       return;
 
@@ -211,6 +234,7 @@ void BlinkWebView::TitleChanged(const std::string& title)
 
 void BlinkWebView::NavigationHistoryChanged()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_delegate)
         return;
 
@@ -219,6 +243,7 @@ void BlinkWebView::NavigationHistoryChanged()
 
 bool BlinkWebView::AllowMouseOnOffEvent() const
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_delegate)
         return false;
 

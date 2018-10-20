@@ -22,7 +22,7 @@
 #include "WebAppManager.h"
 
 #include "webos/webview_base.h"
-
+#include <unistd.h>
 enum ErrorCode {
     ERR_CODE_LAUNCHAPP_MISS_PARAM = 1000,
     ERR_CODE_LAUNCHAPP_UNSUPPORTED_TYPE = 1001,

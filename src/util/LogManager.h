@@ -18,7 +18,7 @@
 #define LOGMANAGER_H
 
 #include "LogMsgId.h"
-
+#include <unistd.h>
 #if defined(DISABLE_LOGMANAGER) || !defined(HAS_PMLOG)
 
 #define LOG_INFO_APPID(...) \

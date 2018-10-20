@@ -19,7 +19,7 @@
 
 #include <QString>
 #include <list>
-
+#include <unistd.h>
 class WebAppBase;
 
 class PlugInService {

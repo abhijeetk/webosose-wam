@@ -22,23 +22,23 @@
 #include "WebAppBase.h"
 
 WebAppManagerService::WebAppManagerService()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 }
 
 std::string WebAppManagerService::onLaunch(const std::string& appDescString, const std::string& params,
         const std::string& launchingAppId, int& errCode, std::string& errMsg)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->launch(appDescString, params, launchingAppId, errCode, errMsg);
 }
 
 bool WebAppManagerService::onKillApp(const std::string& appId)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LOG_INFO(MSGID_LUNA_API, 2, PMLOGKS("APP_ID", qPrintable(QString::fromStdString(appId))), PMLOGKS("API", "killApp"), "");
     return WebAppManager::instance()->onKillApp(appId);
 }
 
 QJsonObject WebAppManagerService::onLogControl(const std::string& keys, const std::string& value)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LogManager::setLogControl(keys, value);
 
     QJsonObject reply;
@@ -51,128 +51,136 @@ QJsonObject WebAppManagerService::onLogControl(const std::string& keys, const st
 }
 
 bool WebAppManagerService::onCloseAllApps(uint32_t pid)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LOG_INFO(MSGID_LUNA_API, 2, PMLOGKS("API", "closeAllApps"), PMLOGKFV("PID", "%d", pid), "");
     return WebAppManager::instance()->closeAllApps(pid);
 }
 
 bool WebAppManagerService::closeContainerApp()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->closeContainerApp();
 }
 
 bool WebAppManagerService::isDiscardCodeCacheRequired()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->isDiscardCodeCacheRequired();
 }
 
 void WebAppManagerService::onDiscardCodeCache(uint32_t pid)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LOG_INFO(MSGID_LUNA_API, 2, PMLOGKS("API", "discardCodeCache"), PMLOGKFV("PID", "%d", pid), "");
     WebAppManager::instance()->discardCodeCache(pid);
 }
 
 bool WebAppManagerService::onPurgeSurfacePool(uint32_t pid)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->purgeSurfacePool(pid);
 }
 
 QJsonObject WebAppManagerService::getWebProcessProfiling()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->getWebProcessProfiling();
 }
 
 void WebAppManagerService::onClearBrowsingData(const int removeBrowsingDataMask)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->clearBrowsingData(removeBrowsingDataMask);
 }
 
 WebAppBase* WebAppManagerService::getContainerApp()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->getContainerApp();
 }
 
 #ifndef PRELOADMANAGER_ENABLED
 void WebAppManagerService::reloadContainerApp()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->reloadContainerApp();
 }
 
 void WebAppManagerService::startContainerTimer()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->startContainerTimer();
 }
 
 void WebAppManagerService::restartContainerApp()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->restartContainerApp();
 }
 #endif
 
 void WebAppManagerService::setDeviceInfo(const QString &name, const QString &value)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->setDeviceInfo(name, value);
 }
 
 void WebAppManagerService::setUiSize(int width, int height)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->setUiSize(width, height);
 }
 
 void WebAppManagerService::setSystemLanguage(const QString &language)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->setSystemLanguage(language);
 }
 
 QString WebAppManagerService::getSystemLanguage()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QString language;
     WebAppManager::instance()->getSystemLanguage(language);
     return language;
 }
 
 void WebAppManagerService::setForceCloseApp(const QString &appId)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->setForceCloseApp(appId);
 }
 
 void WebAppManagerService::deleteStorageData(const QString &identifier)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->deleteStorageData(identifier);
 }
 
 void WebAppManagerService::killCustomPluginProcess(const QString &appBasePath)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->killCustomPluginProcess(appBasePath);
 }
 
 void WebAppManagerService::requestKillWebProcess(uint32_t pid)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->requestKillWebProcess(pid);
 }
 
 bool WebAppManagerService::shouldLaunchContainerAppOnDemand()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->shouldLaunchContainerAppOnDemand();
 }
 
 std::list<const WebAppBase*> WebAppManagerService::runningApps()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->runningApps();
 }
 
 std::list<const WebAppBase*> WebAppManagerService::runningApps(uint32_t pid)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->runningApps(pid);
 }
 
 std::vector<ApplicationInfo> WebAppManagerService::list(bool includeSystemApps)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->list(includeSystemApps);
 }
 
 QJsonObject WebAppManagerService::closeByInstanceId(QString instanceId)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LOG_INFO(MSGID_LUNA_API, 2, PMLOGKS("INSTANCE_ID", qPrintable(instanceId)), PMLOGKS("API", "closeByInstanceId"), "");
     WebAppBase* app = WebAppManager::instance()->findAppByInstanceId(instanceId);
     QString appId;
@@ -198,30 +206,36 @@ QJsonObject WebAppManagerService::closeByInstanceId(QString instanceId)
 
 void WebAppManagerService::setAccessibilityEnabled(bool enable)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->setAccessibilityEnabled(enable);
 }
 
 uint32_t WebAppManagerService::getWebProcessId(const QString& appId)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->getWebProcessId(appId);
 }
 
 void WebAppManagerService::updateNetworkStatus(const QJsonObject& object)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->updateNetworkStatus(object);
 }
 
 void WebAppManagerService::notifyMemoryPressure(webos::WebViewBase::MemoryPressureLevel level)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManager::instance()->notifyMemoryPressure(level);
 }
 
 bool WebAppManagerService::isEnyoApp(const QString& appId)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->isEnyoApp(appId);
 }
 
 int WebAppManagerService::maskForBrowsingDataType(const char* type)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return WebAppManager::instance()->maskForBrowsingDataType(type);
 }

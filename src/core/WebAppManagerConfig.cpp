@@ -29,11 +29,12 @@ WebAppManagerConfig::WebAppManagerConfig()
     , m_useSystemAppOptimization(false)
     , m_launchOptimizationEnabled(false)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     initConfiguration();
 }
 
 void WebAppManagerConfig::initConfiguration()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_webAppFactoryPluginTypes = QLatin1String(qgetenv("WEBAPPFACTORY"));
 
     m_webAppFactoryPluginPath = QLatin1String(qgetenv("WEBAPPFACTORY_PLUGIN_PATH"));
@@ -76,7 +77,7 @@ void WebAppManagerConfig::initConfiguration()
 }
 
 QVariant WebAppManagerConfig::getConfiguration(QString name)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QVariant value(0);
 
     if (m_configuration.contains(name)) {
@@ -87,12 +88,12 @@ QVariant WebAppManagerConfig::getConfiguration(QString name)
 }
 
 void WebAppManagerConfig::setConfiguration(QString name, QVariant value)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_configuration.insert(name, value);
 }
 
 void WebAppManagerConfig::postInitConfiguration()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (access("/var/luna/preferences/debug_system_apps", F_OK) == 0) {
         m_inspectorEnabled = true;
     }

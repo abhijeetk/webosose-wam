@@ -18,6 +18,7 @@
 
 void PlugInServiceLuna::startService()
 {
+	    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     PalmServiceBase::startService();
 }
 

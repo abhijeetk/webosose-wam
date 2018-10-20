@@ -20,7 +20,7 @@
 #include <QString>
 #include <QUrl>
 #include <QtPlugin>
-
+#include <unistd.h>
 class ApplicationDescription;
 class WebAppBase;
 class WebPageBase;

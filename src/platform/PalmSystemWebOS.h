@@ -18,7 +18,7 @@
 #define PALMSYSTEMWEBOS_H_
 
 #include "PalmSystemBase.h"
-
+#include <unistd.h>
 #ifdef HAS_PMLOG
 #include <PmLogLib.h>
 #endif

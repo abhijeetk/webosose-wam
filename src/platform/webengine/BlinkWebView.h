@@ -20,7 +20,7 @@
 #include "webos/webview_base.h"
 #include <QString>
 #include <vector>
-
+#include <unistd.h>
 class WebPageBlinkDelegate;
 
 class BlinkWebView : public webos::WebViewBase {

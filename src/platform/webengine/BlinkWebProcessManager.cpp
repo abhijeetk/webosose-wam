@@ -30,11 +30,13 @@
 
 uint32_t BlinkWebProcessManager::getWebProcessPID(const WebAppBase* app) const
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return static_cast<WebPageBlink*>(app->page())->renderProcessPid();
 }
 
 QJsonObject BlinkWebProcessManager::getWebProcessProfiling()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonObject reply;
     QJsonArray processArray;
     QJsonObject processObject;
@@ -86,6 +88,7 @@ QJsonObject BlinkWebProcessManager::getWebProcessProfiling()
 
 void BlinkWebProcessManager::deleteStorageData(const QString& identifier)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     std::list<const WebAppBase*> runningAppList = runningApps();
     if (!runningAppList.empty()) {
         runningAppList.front()->page()->deleteWebStorages(identifier);
@@ -107,15 +110,17 @@ void BlinkWebProcessManager::deleteStorageData(const QString& identifier)
 
 uint32_t BlinkWebProcessManager::getInitialWebViewProxyID() const
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return 0;
 }
 
 void BlinkWebProcessManager::clearBrowsingData(const int removeBrowsingDataMask)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     BlinkWebViewProfileHelper::clearBrowsingData(removeBrowsingDataMask);
 }
 
 int BlinkWebProcessManager::maskForBrowsingDataType(const char* type)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return BlinkWebViewProfileHelper::maskForBrowsingDataType(type);
 }

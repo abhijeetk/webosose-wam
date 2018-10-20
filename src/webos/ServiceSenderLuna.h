@@ -18,7 +18,7 @@
 #define SERVICESENDERLUNA_H
 
 #include "ServiceSender.h"
-
+#include <unistd.h>
 class ServiceSenderLuna : public ServiceSender {
 public:
     void requestActivity(WebAppBase* app) override;

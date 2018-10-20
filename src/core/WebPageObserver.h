@@ -16,7 +16,7 @@
 
 #ifndef WEBPAGEOBSERVER_H
 #define WEBPAGEOBSERVER_H
-
+#include <unistd.h>
 class WebPageBase;
 
 class WebPageObserver {

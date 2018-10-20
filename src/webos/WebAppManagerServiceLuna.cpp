@@ -57,20 +57,20 @@ WebAppManagerServiceLuna::WebAppManagerServiceLuna()
     : m_clearedCache(false)
     , m_bootDone(false)
     , m_debugLevel("release")
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 }
 
 WebAppManagerServiceLuna::~WebAppManagerServiceLuna()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 }
 
 bool WebAppManagerServiceLuna::startService()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return PalmServiceBase::startService();
 }
 
 QJsonObject WebAppManagerServiceLuna::launchApp(QJsonObject request)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     int errCode;
     std::string errMsg;
     QJsonObject reply;
@@ -129,7 +129,7 @@ QJsonObject WebAppManagerServiceLuna::launchApp(QJsonObject request)
 }
 
 QJsonObject WebAppManagerServiceLuna::killApp(QJsonObject request)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     bool instances;
     instances = WebAppManagerService::onKillApp(request["appId"].toString().toStdString());
 
@@ -149,7 +149,7 @@ QJsonObject WebAppManagerServiceLuna::killApp(QJsonObject request)
 }
 
 QJsonObject WebAppManagerServiceLuna::setInspectorEnable(QJsonObject request)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LOG_DEBUG("WebAppManagerService::setInspectorEnable");
     QString appId = request["appId"].toString();
     QJsonObject reply;
@@ -163,7 +163,7 @@ QJsonObject WebAppManagerServiceLuna::setInspectorEnable(QJsonObject request)
 
 
 QJsonObject WebAppManagerServiceLuna::closeAllApps(QJsonObject request)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     bool val = WebAppManagerService::onCloseAllApps();
 
     QJsonObject reply;
@@ -172,7 +172,7 @@ QJsonObject WebAppManagerServiceLuna::closeAllApps(QJsonObject request)
 }
 
 QJsonObject WebAppManagerServiceLuna::logControl(QJsonObject request)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonObject reply;
 
     if (!request.contains("keys") || !request.contains("value")) {
@@ -187,7 +187,7 @@ QJsonObject WebAppManagerServiceLuna::logControl(QJsonObject request)
 }
 
 QJsonObject WebAppManagerServiceLuna::discardCodeCache(QJsonObject request)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     bool forcedClearCache = false;
     uint32_t pid = 0;
     std::list<const WebAppBase*> running;
@@ -228,13 +228,13 @@ QJsonObject WebAppManagerServiceLuna::discardCodeCache(QJsonObject request)
 }
 
 QJsonObject WebAppManagerServiceLuna::getWebProcessSize(QJsonObject request)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonObject reply = WebAppManagerService::getWebProcessProfiling();
     return reply;
 }
 
 QJsonObject WebAppManagerServiceLuna::listRunningApps(QJsonObject request, bool subscribed)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     bool includeSysApps = request["includeSysApps"].toBool();
 
     std::vector<ApplicationInfo> apps = WebAppManagerService::list(includeSysApps);
@@ -254,13 +254,13 @@ QJsonObject WebAppManagerServiceLuna::listRunningApps(QJsonObject request, bool 
 }
 
 QJsonObject WebAppManagerServiceLuna::closeByProcessId(QJsonObject request)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonObject reply = WebAppManagerService::closeByInstanceId(request["processId"].toString());
     return reply;
 }
 
 QJsonObject WebAppManagerServiceLuna::clearBrowsingData(QJsonObject request)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonObject reply;
     QJsonValue value = request["types"];
     bool returnValue = true;
@@ -321,7 +321,7 @@ QJsonObject WebAppManagerServiceLuna::clearBrowsingData(QJsonObject request)
 }
 
 void WebAppManagerServiceLuna::didConnect()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonObject params;
     params["subscribe"] = true;
 
@@ -352,7 +352,7 @@ void WebAppManagerServiceLuna::didConnect()
 }
 
 void WebAppManagerServiceLuna::systemServiceConnectCallback(QJsonObject reply)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (reply["connected"] == true) {
         QJsonObject localeParams;
         localeParams["subscribe"] = true;
@@ -364,7 +364,7 @@ void WebAppManagerServiceLuna::systemServiceConnectCallback(QJsonObject reply)
 }
 
 void WebAppManagerServiceLuna::getSystemLocalePreferencesCallback(QJsonObject reply)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonObject localeInfo = reply.value("settings").toObject().value("localeInfo").toObject();
 
     //LocaleInfo(language, etc) is empty when service is crashed
@@ -401,7 +401,7 @@ void WebAppManagerServiceLuna::getSystemLocalePreferencesCallback(QJsonObject re
 }
 
 void WebAppManagerServiceLuna::memoryManagerConnectCallback(QJsonObject reply)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (reply["connected"] == true) {
         QJsonObject closeAppObj;
         closeAppObj["subscribe"] = true;
@@ -433,7 +433,7 @@ void WebAppManagerServiceLuna::memoryManagerConnectCallback(QJsonObject reply)
 }
 
 void WebAppManagerServiceLuna::getCloseAppIdCallback(QJsonObject reply)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QString pid = reply["pid"].toString();
     if (!pid.isEmpty()) {
         WebAppManagerService::requestKillWebProcess(pid.toUInt());
@@ -452,7 +452,7 @@ void WebAppManagerServiceLuna::getCloseAppIdCallback(QJsonObject reply)
 }
 
 void WebAppManagerServiceLuna::clearContainersCallback(QJsonObject reply)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QString currentLevel = reply["currentLevel"].toString();
     if (currentLevel.isEmpty()) {
         LOG_DEBUG("No need to close");
@@ -464,7 +464,7 @@ void WebAppManagerServiceLuna::clearContainersCallback(QJsonObject reply)
 }
 
 void WebAppManagerServiceLuna::thresholdChangedCallback(QJsonObject reply)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QString currentLevel = reply["current"].toString();
     if (currentLevel.isEmpty()) {
         LOG_DEBUG("thresholdChanged without level");
@@ -483,7 +483,7 @@ void WebAppManagerServiceLuna::thresholdChangedCallback(QJsonObject reply)
 }
 
 void WebAppManagerServiceLuna::applicationManagerConnectCallback(QJsonObject reply)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (reply["connected"] == true) {
         QJsonObject subscribe;
         subscribe["subscribe"] = true;
@@ -501,7 +501,7 @@ void WebAppManagerServiceLuna::applicationManagerConnectCallback(QJsonObject rep
 }
 
 void WebAppManagerServiceLuna::getAppStatusCallback(QJsonObject reply)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (reply["change"].toString() == "removed") {
         QJsonObject appObject = reply["app"].toObject();
         QString appId = appObject["id"].toString();
@@ -523,7 +523,7 @@ void WebAppManagerServiceLuna::getAppStatusCallback(QJsonObject reply)
 
 
 void WebAppManagerServiceLuna::getForegroundAppInfoCallback(QJsonObject reply)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_clearedCache) {
         m_clearedCache = false;
 #ifndef PRELOADMANAGER_ENABLED
@@ -542,7 +542,7 @@ void WebAppManagerServiceLuna::getForegroundAppInfoCallback(QJsonObject reply)
 }
 
 void WebAppManagerServiceLuna::bootdConnectCallback(QJsonObject reply)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if(reply["connected"].toBool() == true) {
         QJsonObject subscribe;
         subscribe["subscribe"] = true;
@@ -553,7 +553,7 @@ void WebAppManagerServiceLuna::bootdConnectCallback(QJsonObject reply)
 }
 
 void WebAppManagerServiceLuna::getBootStatusCallback(QJsonObject reply)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonObject bootd_signals = reply["signals"].toObject();
 #ifndef PRELOADMANAGER_ENABLED
     if(!WebAppManagerService::getContainerApp() &&
@@ -568,7 +568,7 @@ void WebAppManagerServiceLuna::getBootStatusCallback(QJsonObject reply)
 
 #ifndef PRELOADMANAGER_ENABLED
 void WebAppManagerServiceLuna::launchContainerApp(const QString& id)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonObject json;
     json["id"] = id;
     json["noSplash"] = true;
@@ -579,13 +579,13 @@ void WebAppManagerServiceLuna::launchContainerApp(const QString& id)
 }
 
 void WebAppManagerServiceLuna::launchContainerAppCallback(QJsonObject reply)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     // TODO: check reply and relaunch container app.
 }
 #endif
 
 void WebAppManagerServiceLuna::closeApp(const std::string& id)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonObject json;
     json["id"] = QString::fromStdString(id);
 
@@ -594,12 +594,12 @@ void WebAppManagerServiceLuna::closeApp(const std::string& id)
 }
 
 void WebAppManagerServiceLuna::closeAppCallback(QJsonObject reply)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     // TODO: check reply and close app again.
 }
 
 QJsonObject WebAppManagerServiceLuna::webProcessCreated(QJsonObject request, bool subscribed)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
      QString appId = request["appId"].toString();
      QJsonObject reply;
 
@@ -627,7 +627,7 @@ QJsonObject WebAppManagerServiceLuna::webProcessCreated(QJsonObject request, boo
 }
 
 void WebAppManagerServiceLuna::networkConnectionStatusCallback(QJsonObject reply)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (reply["connected"] == true) {
         LOG_DEBUG("connectionmanager is connected");
         QJsonObject subscribe;
@@ -639,7 +639,7 @@ void WebAppManagerServiceLuna::networkConnectionStatusCallback(QJsonObject reply
 }
 
 void WebAppManagerServiceLuna::getNetworkConnectionStatusCallback(QJsonObject reply)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     // luna-send -f -n 1 palm://com.palm.connectionmanager/getstatus '{"subscribe": true}'
     WebAppManagerService::updateNetworkStatus(reply);
 }

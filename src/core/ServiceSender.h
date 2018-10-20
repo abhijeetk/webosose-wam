@@ -19,7 +19,7 @@
 
 #include "WebAppBase.h"
 #include "WebAppManager.h"
-
+#include <unistd.h>
 class ServiceSender {
 public:
     virtual ~ServiceSender() {}

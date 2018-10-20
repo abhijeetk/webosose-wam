@@ -35,6 +35,7 @@ static int kContainerAppLaunchTryMax = 20;
 
 static inline char * skipToken(const char *p)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     while (isspace(*p))
         p++;
     while (*p && !isspace(*p))
@@ -50,6 +51,7 @@ ContainerAppManager::ContainerAppManager()
     , m_launchContainerAppOnDemand(false)
     , m_useContainerAppOptimization(false)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 #ifndef PRELOADMANAGER_ENABLED
     loadContainerInfo();
 #endif
@@ -57,11 +59,13 @@ ContainerAppManager::ContainerAppManager()
 
 ContainerAppManager::~ContainerAppManager()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     closeContainerApp();
 }
 
 void ContainerAppManager::loadContainerInfo()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QFile file;
     file.setFileName("/var/luna/preferences/container.json");
     if(file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -86,6 +90,7 @@ void ContainerAppManager::loadContainerInfo()
 
 void ContainerAppManager::startContainerTimer()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_containerAppLaunchTimer.stop();
     WebAppManagerUtils::updateAndGetCpuIdle(true);
     m_containerAppLaunchTimer.start(kContainerAppLaunchDuration, this,
@@ -94,16 +99,19 @@ void ContainerAppManager::startContainerTimer()
 
 void ContainerAppManager::stopContainerTimer()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_containerAppLaunchTimer.stop();
 }
 
 QString& ContainerAppManager::getContainerAppId()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return s_containerAppId;
 }
 
 void ContainerAppManager::containerAppLaunch()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (++m_containerAppRelaunchCounter >= kContainerAppLaunchTryMax || WebAppManagerUtils::updateAndGetCpuIdle() > kContainerAppLaunchCpuThresh) {
         m_containerAppRelaunchCounter = 0;
         int errorCode;
@@ -119,6 +127,7 @@ void ContainerAppManager::containerAppLaunch()
 
 WebAppBase* ContainerAppManager::launchContainerAppInternal(const std::string& instanceId, int& errorCode)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_containerApp)
         return m_containerApp;
 
@@ -169,12 +178,14 @@ WebAppBase* ContainerAppManager::launchContainerAppInternal(const std::string& i
 
 WebAppBase* ContainerAppManager::launchContainerApp(const std::string& appDesc, const std::string& instanceId, int& errorCode)
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_containerDesc = appDesc;
     return launchContainerAppInternal(instanceId, errorCode);
 }
 
 void ContainerAppManager::closeContainerApp()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_containerAppIsReady && !m_containerApp) {
         // Stop containerAppTimer
         m_containerAppLaunchTimer.stop();
@@ -199,6 +210,7 @@ void ContainerAppManager::closeContainerApp()
 
 void ContainerAppManager::reloadContainerApp()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_containerApp) {
         m_containerAppIsLaunched = false;
         m_containerAppIsReady = false;
@@ -209,6 +221,7 @@ void ContainerAppManager::reloadContainerApp()
 
 void ContainerAppManager::restartContainerApp()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_containerApp) {
         closeContainerApp();
         m_containerApp = 0;
@@ -219,11 +232,13 @@ void ContainerAppManager::restartContainerApp()
 
 bool ContainerAppManager::isContainerAppReady()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return m_containerAppIsReady && m_containerApp && m_containerApp->page() && !m_containerApp->page()->isClosing();
 }
 
 void ContainerAppManager::resetContainerAppManager()
 {
+        fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     // Do not delete m_containerApp since this API is signaled after launching container-based app
     m_containerAppIsLaunched = false;
     m_containerAppIsReady = false;

@@ -27,10 +27,12 @@
 PalmSystemBlink::PalmSystemBlink(WebAppBase* app)
     : PalmSystemWebOS(app)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 }
 
 QString PalmSystemBlink::handleBrowserControlMessage(const QString& message, const QStringList& params)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (message == "initialize") {
         return initialize().toJson();
     } else if (message == "country") {
@@ -153,24 +155,28 @@ QString PalmSystemBlink::handleBrowserControlMessage(const QString& message, con
 
 void PalmSystemBlink::setCountry()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_initialized)
         static_cast<WebPageBlink*>(m_app->page())->updateExtensionData(QStringLiteral("country"), country());
 }
 
 void PalmSystemBlink::setLaunchParams(const QString& params)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     PalmSystemWebOS::setLaunchParams(params);
     static_cast<WebPageBlink*>(m_app->page())->updateExtensionData(QStringLiteral("launchParams"), launchParams());
 }
 
 void PalmSystemBlink::setLocale(const QString& params)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_initialized)
         static_cast<WebPageBlink*>(m_app->page())->updateExtensionData(QStringLiteral("locale"), params);
 }
 
 QString PalmSystemBlink::identifier() const
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_app->page())
         return QStringLiteral("");
 
@@ -179,16 +185,19 @@ QString PalmSystemBlink::identifier() const
 
 void PalmSystemBlink::setLoadErrorPolicy(const QString& params)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     static_cast<WebPageBlink*>(m_app->page())->setLoadErrorPolicy(params);
 }
 
 QString PalmSystemBlink::trustLevel() const
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return static_cast<WebPageBlink*>(m_app->page())->trustLevel();
 }
 
 void PalmSystemBlink::onCloseNotify(const QString& params)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (params == "didSetOnCloseCallback")
         static_cast<WebPageBlink*>(m_app->page())->setHasOnCloseCallback(true);
     else if (params == "didClearOnCloseCallback")
@@ -199,11 +208,13 @@ void PalmSystemBlink::onCloseNotify(const QString& params)
 
 double PalmSystemBlink::devicePixelRatio()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return static_cast<WebPageBlink*>(m_app->page())->devicePixelRatio();
 }
 
 QJsonDocument PalmSystemBlink::initialize()
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonObject data = PalmSystemWebOS::initialize().object();
     data["devicePixelRatio"] = devicePixelRatio();
     data["trustLevel"] = trustLevel();

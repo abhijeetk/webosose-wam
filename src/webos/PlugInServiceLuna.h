@@ -19,7 +19,7 @@
 
 #include "PalmServiceBase.h"
 #include "PlugInService.h"
-
+#include <unistd.h>
 class WebAppBase;
 
 class PlugInServiceLuna : public PalmServiceBase, public PlugInService {

@@ -24,7 +24,7 @@
 #include <grp.h>
 
 int WebAppManagerUtils::updateAndGetCpuIdle(bool updateOnly)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     static long oldCpuTime[4];
     long curCpuTime[4];
     long* cpuTime = curCpuTime;
@@ -59,7 +59,7 @@ int WebAppManagerUtils::updateAndGetCpuIdle(bool updateOnly)
 }
 
 char* WebAppManagerUtils::skipToken(const char* p)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     while (isspace(*p))
         p++;
     while (*p && !isspace(*p))
@@ -68,7 +68,7 @@ char* WebAppManagerUtils::skipToken(const char* p)
 }
 
 long WebAppManagerUtils::percentages(int cnt, int* out, long* now, long* old, long* diffs)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     register long totalChange = 0;
     register long* dp = diffs;
 
@@ -94,7 +94,7 @@ void WebAppManagerUtils::tokenize(std::string &str, std::vector<std::string> &to
         const std::string &delimiters) {
     std::string::size_type lastPos = str.find_first_not_of(delimiters, 0);
     std::string::size_type pos     = str.find_first_of(delimiters, lastPos);
-
+fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     while (std::string::npos != pos || std::string::npos != lastPos) {
         tokens.push_back(str.substr(lastPos, pos - lastPos));
         lastPos = str.find_first_not_of(delimiters, pos);
@@ -106,7 +106,7 @@ bool WebAppManagerUtils::inVector(std::vector<std::string> &tokens, const char *
     unsigned int i;
     int len;
     len = strlen(arg);
-
+fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     for (i = 0; i < tokens.size(); i++) {
         int tlen = strlen(tokens[i].c_str());
 
@@ -122,7 +122,7 @@ bool WebAppManagerUtils::inGroup(std::string line, const char* user_name) {
     // only tokenize the lines that have users in the groups.
     // empty groups have the last character as ":".
     size_t pos = line.find_last_of(":");
-
+fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (pos == (line.size() - 1)) {
         return false;
     } else {
@@ -137,7 +137,7 @@ bool WebAppManagerUtils::inGroup(std::string line, const char* user_name) {
 bool WebAppManagerUtils::setGroups() {
     gid_t glist[128];
     size_t ngroups = 0;
-
+fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     std::string line;
     std::string newgrouppath = "/etc/group";
 

@@ -24,7 +24,7 @@
 #include <QJsonArray>
 
 void ServiceSenderLuna::requestActivity(WebAppBase* app)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonObject payload;
     QJsonObject activity;
     activity["name"] = app->appId();
@@ -50,13 +50,13 @@ void ServiceSenderLuna::requestActivity(WebAppBase* app)
 
 #ifndef PRELOADMANAGER_ENABLED
 void ServiceSenderLuna::launchContainerApp(const QString& id)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManagerServiceLuna::instance()->launchContainerApp(id);
 }
 #endif
 
 void ServiceSenderLuna::postlistRunningApps(std::vector<ApplicationInfo> &apps)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonObject reply;
     QJsonArray runningApps;
     for (auto it = apps.begin(); it != apps.end(); ++it) {
@@ -73,7 +73,7 @@ void ServiceSenderLuna::postlistRunningApps(std::vector<ApplicationInfo> &apps)
 }
 
 void ServiceSenderLuna::postWebProcessCreated(const QString& appId, uint32_t pid)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QJsonObject reply;
     reply["id"] = appId;
     reply["webprocessid"] = (int)pid;
@@ -83,7 +83,7 @@ void ServiceSenderLuna::postWebProcessCreated(const QString& appId, uint32_t pid
 }
 
 void ServiceSenderLuna::serviceCall(const QString& url, const QString& payload, const QString& appId)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     bool ret = WebAppManagerServiceLuna::instance()->callPrivate(
                 url.toLatin1().constData(),
                 QJsonDocument::fromJson(payload.toStdString().c_str()).object(),
@@ -94,7 +94,7 @@ void ServiceSenderLuna::serviceCall(const QString& url, const QString& payload, 
 }
 
 void ServiceSenderLuna::closeApp(const std::string& id)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppManagerServiceLuna::instance()->closeApp(id);
 }
 

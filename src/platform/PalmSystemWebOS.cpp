@@ -30,11 +30,11 @@ PalmSystemWebOS::PalmSystemWebOS(WebAppBase* app)
     : m_app(static_cast<WebAppWayland*>(app))
     , m_initialized(false)
     , m_launchParams(QString())
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 }
 
 void PalmSystemWebOS::setLaunchParams(const QString& params)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QString p = params;
     QJsonDocument jsonDoc = QJsonDocument::fromJson(QByteArray(params.toStdString().c_str()));
     QJsonObject jsonObject = jsonDoc.object();
@@ -46,7 +46,7 @@ void PalmSystemWebOS::setLaunchParams(const QString& params)
 }
 
 QJsonDocument PalmSystemWebOS::initialize()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_initialized = true;
 
     // Setup initial data set
@@ -68,22 +68,22 @@ QJsonDocument PalmSystemWebOS::initialize()
 }
 
 bool PalmSystemWebOS::isActivated() const
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return m_app->isFocused();
 }
 
 bool PalmSystemWebOS::isKeyboardVisible() const
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return m_app->page()->isKeyboardVisible();
 }
 
 bool PalmSystemWebOS::isMinimal() const
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return QFile::exists("/var/luna/preferences/ran-firstuse");
 }
 
 int PalmSystemWebOS::activityId() const
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_app->page())
         return -1;
 
@@ -91,7 +91,7 @@ int PalmSystemWebOS::activityId() const
 }
 
 void PalmSystemWebOS::activate()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     ApplicationDescription* appDesc = m_app->getAppDescription();
     if (appDesc && !appDesc->handlesRelaunch())
         return;
@@ -104,23 +104,23 @@ void PalmSystemWebOS::activate()
 }
 
 void PalmSystemWebOS::deactivate()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LOG_DEBUG("[%s] called PalmSystem.deactivate() from the app, call goBackground() to go background", qPrintable(m_app->appId()));
     m_app->goBackground();
 }
 
 void PalmSystemWebOS::stagePreparing()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_app->stagePreparing();
 }
 
 void PalmSystemWebOS::stageReady()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_app->stageReady();
 }
 
 void PalmSystemWebOS::hide()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_app->hide();
 }
 
@@ -132,7 +132,7 @@ void PalmSystemWebOS::setInputRegion(const QByteArray& params)
 }
 
 void PalmSystemWebOS::setGroupClientEnvironment(GroupClientCallKey callKey, const QByteArray& params)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     ApplicationDescription* appDesc = m_app ? m_app->getAppDescription() : 0;
     if (appDesc) {
         ApplicationDescription::WindowGroupInfo groupInfo = appDesc->getWindowGroupInfo();
@@ -156,14 +156,14 @@ void PalmSystemWebOS::setGroupClientEnvironment(GroupClientCallKey callKey, cons
 }
 
 void PalmSystemWebOS::setKeepAlive(bool keep)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     //TODO: Need to check that this app is keepalive app.
     m_app->setKeepAlive(keep);
 }
 
 #ifdef HAS_PMLOG
 void PalmSystemWebOS::pmLogInfoWithClock(const QVariant& msgid, const QVariant& perfType, const QVariant& perfGroup)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     PmLogContext context;
     PmLogGetContext(qPrintable(m_app->page()->appId()), &context);
     PmLogInfoWithClock(context, msgid.toByteArray().size() ? msgid.toByteArray().data() : NULL, 2,
@@ -172,7 +172,7 @@ void PalmSystemWebOS::pmLogInfoWithClock(const QVariant& msgid, const QVariant& 
 }
 
 void PalmSystemWebOS::pmLogString(PmLogLevel level, const QVariant& msgid, const QVariant& kvpairs, const QVariant& message)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     PmLogContext context;
     PmLogGetContext(qPrintable(m_app->page()->appId()), &context);
     PmLogString(context, level, msgid.toByteArray().size() ? msgid.toByteArray().data() : NULL,
@@ -181,12 +181,13 @@ void PalmSystemWebOS::pmLogString(PmLogLevel level, const QVariant& msgid, const
 #endif
 
 bool PalmSystemWebOS::cursorVisibility()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     return m_app->cursorVisibility();
 }
 
 void PalmSystemWebOS::updateLaunchParams(const QString& launchParams)
 {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_app->page()->setLaunchParams(launchParams);
 }
 

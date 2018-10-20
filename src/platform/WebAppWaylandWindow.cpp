@@ -22,7 +22,7 @@
 WebAppWaylandWindow* WebAppWaylandWindow::s_instance = 0;
 
 WebAppWaylandWindow* WebAppWaylandWindow::take(int surface_id)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppWaylandWindow* window;
 
     if (!s_instance)
@@ -39,13 +39,13 @@ WebAppWaylandWindow* WebAppWaylandWindow::take(int surface_id)
 }
 
 void WebAppWaylandWindow::prepareRenderingContext()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     /* This shouldn't be destroyed */
     (void*)createWindow();
 }
 
 void WebAppWaylandWindow::prepare()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (s_instance)
         return;
 
@@ -58,6 +58,7 @@ void WebAppWaylandWindow::prepare()
 }
 
 WebAppWaylandWindow* WebAppWaylandWindow::createWindow() {
+    fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppWaylandWindow *window = new WebAppWaylandWindow();
     if (!window) {
         LOG_CRITICAL(MSGID_PREPARE_FAIL, 0, "Failed to prepare WindowedWebAppWindow");
@@ -72,31 +73,31 @@ WebAppWaylandWindow::WebAppWaylandWindow()
     , m_cursorVisible(false)
     , m_xinputActivated(false)
     , m_lastMouseEvent(WebOSMouseEvent(WebOSEvent::None, -1., -1.))
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     m_cursorEnabled = (qgetenv("ENABLE_CURSOR_BY_DEFAULT") == "1") ? true : false;;
 }
 
 void WebAppWaylandWindow::hide()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LOG_INFO(MSGID_WAM_DEBUG, 1, PMLOGKS("APP_ID", qPrintable(m_webApp->appId())), "WebAppWaylandWindow::hide(); call onStageDeactivated");
     onStageDeactivated();
     WebAppWindowBase::Hide();
 }
 
 void WebAppWaylandWindow::show()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LOG_INFO(MSGID_WAM_DEBUG, 1, PMLOGKS("APP_ID", qPrintable(m_webApp->appId())), "WebAppWaylandWindow::show(); call onStageActivated");
     onStageActivated();
     WebAppWindowBase::Show();
 }
 
 void WebAppWaylandWindow::platformBack()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     LOG_INFO(MSGID_WAM_DEBUG, 1, PMLOGKS("APP_ID", qPrintable(m_webApp->appId())), "WebAppWaylandWindow::platformBack(); generate RECENT key");
 }
 
 void WebAppWaylandWindow::setCursor(const QString & cursorArg, int hotspot_x, int hotspot_y)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     webos::CustomCursorType type = webos::CUSTOM_CURSOR_NOT_USE;
     if (cursorArg.isEmpty() || !cursorArg.compare("default"))
         LOG_DEBUG("[%s] %s; arg: %s; Restore Cursor to webos::CUSTOM_CURSOR_NOT_USE", qPrintable(m_webApp->appId()), __PRETTY_FUNCTION__, cursorArg.toUtf8().data());
@@ -119,12 +120,12 @@ void WebAppWaylandWindow::setCursor(const QString & cursorArg, int hotspot_x, in
 }
 
 void WebAppWaylandWindow::attachWebContents(void* webContents)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     WebAppWindowBase::AttachWebContents(webContents);
 }
 
 bool WebAppWaylandWindow::event(WebOSEvent* event)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_webApp)
         return true;
 
@@ -219,7 +220,7 @@ bool WebAppWaylandWindow::event(WebOSEvent* event)
 }
 
 void WebAppWaylandWindow::onStageActivated()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_webApp)
         return;
 
@@ -227,7 +228,7 @@ void WebAppWaylandWindow::onStageActivated()
 }
 
 void WebAppWaylandWindow::onStageDeactivated()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_webApp)
         return;
 
@@ -235,7 +236,7 @@ void WebAppWaylandWindow::onStageDeactivated()
 }
 
 void WebAppWaylandWindow::onWindowStateChangeEvent()
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (m_webApp->isClosing()) {
         LOG_INFO(MSGID_WINDOW_STATE_CHANGED, 1, PMLOGKS("APP_ID", qPrintable(m_webApp->appId())), "In Closing; return;");
         return;
@@ -262,7 +263,7 @@ void WebAppWaylandWindow::onWindowStateChangeEvent()
 }
 
 bool WebAppWaylandWindow::onCursorVisibileChangeEvent(WebOSEvent* e)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (!m_cursorEnabled) {
         if (cursorVisible())
             setCursorVisible(false);
@@ -274,7 +275,7 @@ bool WebAppWaylandWindow::onCursorVisibileChangeEvent(WebOSEvent* e)
 }
 
 unsigned int WebAppWaylandWindow::CheckKeyFilterTable(unsigned keycode, unsigned* modifier)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     QMap<int, QPair<int, int>> table = m_webApp->getAppDescription()->keyFilterTable();
 
     if (table.empty())
@@ -289,7 +290,7 @@ unsigned int WebAppWaylandWindow::CheckKeyFilterTable(unsigned keycode, unsigned
 }
 
 void WebAppWaylandWindow::logEventDebugging(WebOSEvent* event)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
     if (LogManager::getDebugMouseMoveEnabled()) {
        if (event->GetType() == WebOSEvent::MouseMove) {
            if (m_cursorEnabled) {
@@ -340,7 +341,7 @@ void WebAppWaylandWindow::logEventDebugging(WebOSEvent* event)
 }
 
 void WebAppWaylandWindow::sendKeyCode(int keyCode)
-{
+{fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
 #if defined(OS_WEBOS)
     if (!m_xinputActivated) {
         XInputActivate();

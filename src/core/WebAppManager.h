@@ -25,7 +25,7 @@
 #include <QJsonObject>
 #include <QMultiMap>
 #include <QString>
-
+#include <unistd.h>
 #include "webos/webview_base.h"
 
 class ApplicationDescription;

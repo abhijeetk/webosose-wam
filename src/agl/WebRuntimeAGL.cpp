@@ -22,6 +22,7 @@ volatile sig_atomic_t e_flag = 0;
 
 
 static std::string getAppId(const std::vector<std::string>& args) {
+  fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   const char *afm_id = getenv("AFM_ID");
   if (afm_id == nullptr || !afm_id[0]) {
     return args[0];
@@ -31,6 +32,7 @@ static std::string getAppId(const std::vector<std::string>& args) {
 }
 
 static std::string getAppUrl(const std::vector<std::string>& args) {
+  fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   for (size_t i=0; i < args.size(); i++) {
     std::size_t found = args[i].find(std::string("http://"));
     if (found != std::string::npos)
@@ -40,6 +42,7 @@ static std::string getAppUrl(const std::vector<std::string>& args) {
 }
 
 static bool isBrowserProcess(const std::vector<std::string>& args) {
+      fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   // if type is not given then we are browser process
   for (size_t i=0; i < args.size(); i++) {
     std::string param("--type=");
@@ -51,6 +54,7 @@ static bool isBrowserProcess(const std::vector<std::string>& args) {
 }
 
 static bool isSharedBrowserProcess(const std::vector<std::string>& args) {
+      fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   // if 'http://' param is not present then assume shared browser process
   for (size_t i=0; i < args.size(); i++) {
     std::size_t found = args[i].find(std::string("http://"));
@@ -63,6 +67,7 @@ static bool isSharedBrowserProcess(const std::vector<std::string>& args) {
 class AGLMainDelegateWAM : public webos::WebOSMainDelegate {
 public:
     void AboutToCreateContentBrowserClient() override {
+          fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
       WebAppManagerServiceAGL::instance()->startService();
       WebAppManager::instance()->setPlatformModules(new PlatformModuleFactoryImpl());
     }
@@ -71,12 +76,14 @@ public:
 class AGLRendererDelegateWAM : public webos::WebOSMainDelegate {
 public:
     void AboutToCreateContentBrowserClient() override {
+          fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
       // do nothing
     }
 };
 
 void Launcher::register_surfpid(pid_t surf_pid)
 {
+      fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   if (surf_pid == m_rid) {
     if (!std::count(m_pid_v.begin(), m_pid_v.end(), surf_pid)) {
       fprintf(stderr, "surface creator(pid=%d) registered\r\n", surf_pid);
@@ -89,6 +96,7 @@ void Launcher::register_surfpid(pid_t surf_pid)
 
 void Launcher::unregister_surfpid(pid_t surf_pid)
 {
+      fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   auto itr = m_pid_v.begin();
   while (itr != m_pid_v.end()) {
     if (*itr == surf_pid) {
@@ -111,17 +119,20 @@ pid_t Launcher::find_surfpid_by_rid(pid_t rid)
 
 int SingleBrowserProcessWebAppLauncher::launch(const std::string& id, const std::string& uri) {
   m_rid = (int)getpid();
+      fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   WebAppManagerServiceAGL::instance()->setStartupApplication(id, uri, m_rid);
   return m_rid;
 }
 
 int SingleBrowserProcessWebAppLauncher::loop(int argc, const char** argv, volatile sig_atomic_t& e_flag) {
+      fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   AGLMainDelegateWAM delegate;
   webos::WebOSMain webOSMain(&delegate);
   return webOSMain.Run(argc, argv);
 }
 
 int SharedBrowserProcessWebAppLauncher::launch(const std::string& id, const std::string& uri) {
+      fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   if (!WebAppManagerServiceAGL::instance()->initializeAsHostClient()) {
     fprintf(stderr,"Failed to initialize as host client\r\n");
     return -1;
@@ -139,11 +150,13 @@ int SharedBrowserProcessWebAppLauncher::launch(const std::string& id, const std:
 
 int SharedBrowserProcessWebAppLauncher::loop(int argc, const char** argv, volatile sig_atomic_t& e_flag) {
   // TODO: wait for a pid
+      fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   while (1)
     sleep(1);
   return 0;
 }
 
+#include <iostream>
 int WebAppLauncherRuntime::run(int argc, const char** argv) {
   std::vector<std::string> args(argv + 1, argv + argc);
   m_id = getAppId(args);
@@ -166,6 +179,7 @@ fprintf(stderr, "WebAppLauncherRuntime::run - creating SingleBrowserProcessWebAp
     return -1;
 
   /* Launch WAM application */
+  std::cout << "Launch WAM application" << std::endl;
   m_launcher->m_rid = m_launcher->launch(m_id, m_url);
 
   if (m_launcher->m_rid < 0) {
@@ -181,6 +195,7 @@ fprintf(stderr, "WebAppLauncherRuntime::run - creating SingleBrowserProcessWebAp
 
 bool WebAppLauncherRuntime::init() {
   // based on https://tools.ietf.org/html/rfc3986#page-50
+      fprintf(stderr, "WebAppLauncherRuntime::init : %s %s %d\r\n", __FILE__, __FUNCTION__, __LINE__);
   std::regex url_regex (
     R"(^(([^:\/?#]+):)?(//([^\/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?)",
     std::regex::extended
@@ -214,7 +229,7 @@ bool WebAppLauncherRuntime::init() {
 
     auto path = std::string(getenv("AFM_APP_INSTALL_DIR"));
     path = path + "/" + WEBAPP_CONFIG;
-
+    std::cout << "WEBAPP_CONFIG : " << path << std::endl;
     // Parse config file of runxdg
     if (parse_config(path.c_str())) {
       fprintf(stderr, "Error in config\r\n");
@@ -247,7 +262,9 @@ bool WebAppLauncherRuntime::init() {
 }
 
 bool WebAppLauncherRuntime::init_wm() {
+  fprintf(stderr, "Init WindowManager : %s %s %d\r\n", __FILE__, __FUNCTION__, __LINE__);
   m_wm = new LibWindowmanager();
+  fprintf(stderr, "Init WindowManager : %s %d\r\n", m_token.c_str() , m_port);
   if (m_wm->init(m_port, m_token.c_str())) {
     fprintf(stderr, "cannot initialize windowmanager\r\n");
     return false;
@@ -293,7 +310,9 @@ bool WebAppLauncherRuntime::init_wm() {
 }
 
 bool WebAppLauncherRuntime::init_hs() {
+  fprintf(stderr, "Init HomeScreen : %s %s %d\r\n", __FILE__, __FUNCTION__, __LINE__);
   m_hs = new LibHomeScreen();
+  fprintf(stderr, "Init HomeScreen : %s %d\r\n", m_token.c_str() , m_port);
   if (m_hs->init(m_port, m_token.c_str())) {
     fprintf(stderr, "cannot initialize homescreen\r\n");
     return false;
@@ -334,6 +353,7 @@ bool WebAppLauncherRuntime::init_hs() {
 
 int WebAppLauncherRuntime::parse_config (const char *path_to_config)
 {
+      fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   xmlDoc *doc = xmlReadFile(path_to_config, nullptr, 0);
   xmlNode *root = xmlDocGetRootElement(doc);
 
@@ -384,6 +404,7 @@ int WebAppLauncherRuntime::parse_config (const char *path_to_config)
 
 void WebAppLauncherRuntime::setup_surface (int id)
 {
+      fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   std::string sid = std::to_string(id);
 
   // This surface is mine, register pair app_name and ivi id.
@@ -413,6 +434,7 @@ void WebAppLauncherRuntime::setup_surface (int id)
 void WebAppLauncherRuntime::notify_ivi_control_cb (ilmObjectType object, t_ilm_uint id,
                                     t_ilm_bool created)
 {
+      fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   if (object == ILM_SURFACE) {
     struct ilmSurfaceProperties surf_props;
 
@@ -445,12 +467,14 @@ void WebAppLauncherRuntime::notify_ivi_control_cb (ilmObjectType object, t_ilm_u
 void WebAppLauncherRuntime::notify_ivi_control_cb_static (ilmObjectType object, t_ilm_uint id,
                                            t_ilm_bool created, void *user_data)
 {
+      fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   WebAppLauncherRuntime *wam = static_cast<WebAppLauncherRuntime*>(user_data);
   wam->notify_ivi_control_cb(object, id, created);
 }
 
 
 int SharedBrowserProcessRuntime::run(int argc, const char** argv) {
+      fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   if (WebAppManagerServiceAGL::instance()->initializeAsHostService()) {
     AGLMainDelegateWAM delegate;
     webos::WebOSMain webOSMain(&delegate);
@@ -462,6 +486,7 @@ int SharedBrowserProcessRuntime::run(int argc, const char** argv) {
 }
 
 int RenderProcessRuntime::run(int argc, const char** argv) {
+      fprintf(stderr, "[%d] %s %s %d\r\n", (int)getpid(), __FILE__, __FUNCTION__, __LINE__);
   AGLMainDelegateWAM delegate;
   webos::WebOSMain webOSMain(&delegate);
   return webOSMain.Run(argc, argv);
