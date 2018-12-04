@@ -40,7 +40,7 @@ public:
 
 protected:
     // PalmSystemWebOS
-    Json::Value initialize() override;
+    Json::Value initialize();
     QString identifier() const override;
     void setLoadErrorPolicy(const QString& params) override;
 
