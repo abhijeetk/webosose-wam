@@ -23,9 +23,9 @@
 
 class WebAppFactoryAGL : public WebAppFactoryInterface {
 public:
-    virtual WebAppBase* createWebApp(QString winType, ApplicationDescription* desc = 0);
-    virtual WebAppBase* createWebApp(QString winType, WebPageBase* page, ApplicationDescription* desc = 0);
-    virtual WebPageBase* createWebPage(QUrl url, ApplicationDescription* desc, QString launchParams = "");
+    virtual WebAppBase* createWebApp(QString winType, std::shared_ptr<ApplicationDescription> desc = nullptr);
+    virtual WebAppBase* createWebApp(QString winType, WebPageBase* page, std::shared_ptr<ApplicationDescription> desc = nullptr);
+    virtual WebPageBase* createWebPage(QUrl url, std::shared_ptr<ApplicationDescription> desc, QString launchParams = "");
 };
 
 #endif /* WEBAPPFACTORYAGL_H */

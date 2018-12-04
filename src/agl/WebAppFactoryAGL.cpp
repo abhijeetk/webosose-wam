@@ -27,7 +27,7 @@
 
 #include <QString>
 
-WebAppBase* WebAppFactoryAGL::createWebApp(QString winType, ApplicationDescription* desc)
+WebAppBase* WebAppFactoryAGL::createWebApp(QString winType, std::shared_ptr<ApplicationDescription> desc)
 {
     WebAppBase* app = 0;
 
@@ -46,12 +46,12 @@ WebAppBase* WebAppFactoryAGL::createWebApp(QString winType, ApplicationDescripti
     return app;
 }
 
-WebAppBase* WebAppFactoryAGL::createWebApp(QString winType, WebPageBase* page, ApplicationDescription* desc)
+WebAppBase* WebAppFactoryAGL::createWebApp(QString winType, WebPageBase* page, std::shared_ptr<ApplicationDescription> desc)
 {
     return createWebApp(winType, desc);
 }
 
-WebPageBase* WebAppFactoryAGL::createWebPage(QUrl url, ApplicationDescription* desc, QString launchParams)
+WebPageBase* WebAppFactoryAGL::createWebPage(QUrl url, std::shared_ptr<ApplicationDescription> desc, QString launchParams)
 {
     return new WebPageBlink(url, desc, launchParams);
 }

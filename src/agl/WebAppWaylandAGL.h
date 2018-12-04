@@ -17,13 +17,15 @@
 #ifndef WEBAPPWAYLANDAGL_H
 #define WEBAPPWAYLANDAGL_H
 
+#include <memory>
+
 #include "WebAppWayland.h"
 
 class ApplicationDescription;
 
 class WebAppWaylandAGL : public WebAppWayland {
 public:
-    WebAppWaylandAGL(QString& winType, ApplicationDescription* desc = 0);
+    WebAppWaylandAGL(QString& winType, std::shared_ptr<ApplicationDescription> desc = 0);
 };
 
 #endif /* WEBAPPWAYLANDAGL_H */
