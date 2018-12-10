@@ -325,11 +325,11 @@ void WebAppManagerServiceAGL::launchStartupAppFromURL()
     LOG_DEBUG("WebAppManagerServiceAGL::launchStartupAppFromURL");
     LOG_DEBUG("    url: %s", startup_app_uri_.c_str());
     Json::Value obj(Json::objectValue);
-    obj["id"] = (const char*)startup_app_id_.c_str();
+    obj["id"] = startup_app_id_;
     obj["version"] = "1.0";
     obj["vendor"] = "some vendor";
     obj["type"] = "web";
-    obj["main"] = (const char*)startup_app_uri_.c_str();
+    obj["main"] = startup_app_uri_;
     obj["title"] = "webapp";
     obj["uiRevision"] = "2";
     //obj["icon"] = (const char*)icon;
@@ -338,10 +338,9 @@ void WebAppManagerServiceAGL::launchStartupAppFromURL()
 
     std::string appDesc;
     dumpJsonToString(obj, appDesc);
-    std::string params;
-    std::string app_id = obj["id"].asString();
+    std::string app_id = startup_app_id_;
     int errCode = 0;
-    std::string errMsg;
+    std::string params, errMsg;
 
     LOG_DEBUG("Launching with appDesc=[%s]", appDesc.c_str());
 
